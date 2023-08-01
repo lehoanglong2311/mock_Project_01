@@ -1,8 +1,8 @@
 import './App.css';
-import NavBar from './components/NavBar';
-import Home from './components/Home';
-import SignIn from './components/SignIn';
-import SignUp from './components/SignUp';
+import NavBar from './components/Articles/NavBar';
+import Home from './components/Articles/Home';
+import SignIn from './components/LoginSignup/SignIn';
+import SignUp from './components/LoginSignup/SignUp';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 

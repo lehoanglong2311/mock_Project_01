@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import { BrowserRouter, Route, Link, NavLink, useNavigate } from "react-router-dom";
 
 const NavBar = () => {
     return (
@@ -12,9 +13,9 @@ const NavBar = () => {
                 <Container>
                     <Navbar.Brand style={{ fontWeight: 'bold' }} className='text-success' href="/">conduit</Navbar.Brand>
                     <Nav className="justify-content-end">
-                        <Nav.Link href="/">Home</Nav.Link>
-                        <Nav.Link href="login">Sign in</Nav.Link>
-                        <Nav.Link href="register">Sign up</Nav.Link>
+                        <NavLink className="nav-link" to="/">Home</NavLink>
+                        <NavLink className="nav-link" to="/login">Sign in</NavLink>
+                        <NavLink className="nav-link" to="/register">Sign up</NavLink>
                     </Nav>
                 </Container>
             </Navbar>

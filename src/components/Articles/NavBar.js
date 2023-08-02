@@ -11,7 +11,7 @@ const NavBar = () => {
         <div style={{ minHeight: '100vh', position: 'relative' }}>
             <Navbar bg="light" data-bs-theme="light">
                 <Container>
-                    <Navbar.Brand style={{ fontWeight: 'bold' }} className='text-success' href="/">conduit</Navbar.Brand>
+                    <Navbar.Brand style={{ fontWeight: 'bold', color:'#5CB85C', fontFamily:'Titillium Web, sans-serif', fontSize:'1.5rem'}} href="/">conduit</Navbar.Brand>
                     <Nav className="justify-content-end">
                         <NavLink className="nav-link" to="/">Home</NavLink>
                         <NavLink className="nav-link" to="/login">Sign in</NavLink>

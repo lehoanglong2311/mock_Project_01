@@ -16,6 +16,14 @@ const Home = () => {
                     <Col sm={{ size: 3, offset: 2, order: 2 }}>Popular Tags</Col>
                 </Row>
             </Container>
+
+
+            <Container className='mt-4'>
+                <Row>
+                    <Col sm={{ size: 6, order: 1, offset: 1 }}>DucHM</Col>
+                    <Col sm={{ size: 3, offset: 2, order: 2 }}>39048390483204234</Col>
+                </Row>
+            </Container>
         </>
     );
 };

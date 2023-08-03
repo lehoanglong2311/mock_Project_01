@@ -4,7 +4,7 @@ import Home from './components/Articles/Home';
 import SignIn from './components/LoginSignup/SignIn';
 import SignUp from './components/LoginSignup/SignUp';
 import UserProfile from './components/Profile/UserProfile';
-import Setting from './components/Profile/Setting';
+import SettingScreen from './components/Profile/SettingScreen';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 
@@ -30,8 +30,8 @@ export const router = createBrowserRouter([
         element: <UserProfile />,
       },
       {
-        path: "/settings",
-        element: <Setting />,
+        path: "/settings/:username",
+        element: <SettingScreen />,
       },
     ],
   },

@@ -1,21 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import './UserProfile.css';
 import Button from 'react-bootstrap/Button';
-import { useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+// import Setting from './Setting'; // Import the Setting component
 
 const UserProfile = () => {
     const { username } = useParams();
-    const [userData, setUserData] = useState({
-        image: '',
-        username: '',
-        bio: '',
-        email: '',
-        password: '',
-    });
-    const navigate = useNavigate(); 
+    const [userData, setUserData] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -31,7 +25,7 @@ const UserProfile = () => {
     }, [username]);
 
     const handleEditProfile = () => {
-        navigate('/settings');
+        navigate(`/settings/${username}`);
     };
 
     return (
@@ -47,6 +41,8 @@ const UserProfile = () => {
                     <Button className='edit-profile-btn' variant="outline-secondary" onClick={handleEditProfile}>
                         <i className="fa-solid fa-gear"></i> Edit Profile Settings
                     </Button>
+
+                    {/* <Setting username={username} userData={userData} /> */}
                 </div>
             )}
         </>

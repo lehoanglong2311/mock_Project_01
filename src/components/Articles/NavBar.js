@@ -20,7 +20,7 @@ const NavBar = () => {
                 </Container>
             </Navbar>
             <Outlet />
-            <div
+            {/* <div
                 style={{
                     position: 'absolute',
                     bottom: 0,
@@ -45,7 +45,7 @@ const NavBar = () => {
                     <i style={{ fontSize: '24px' }} className='fab fa-github'></i>
                     Fork on GitHub
                 </a>
-            </div>
+            </div> */}
         </div>
     );
 };

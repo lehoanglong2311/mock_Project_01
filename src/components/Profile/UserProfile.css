@@ -1,5 +1,7 @@
 .avatar{
     border-radius: 50%;
+    min-width: 7%;
+    /* min-height: 7%; */
 }
 .bg-profile {
     background-color: #f3f3f3;

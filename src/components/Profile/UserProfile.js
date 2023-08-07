@@ -4,11 +4,12 @@ import axios from 'axios';
 import './UserProfile.css';
 import Button from 'react-bootstrap/Button';
 import { useParams, useNavigate } from 'react-router-dom';
-// import Setting from './Setting'; // Import the Setting component
+import { IoMdPersonAdd } from 'react-icons/io'; // Import IoMdPersonAdd icon from react-icons/io
 
 const UserProfile = () => {
     const { username } = useParams();
     const [userData, setUserData] = useState(null);
+    const [isFollowing, setIsFollowing] = useState(false); // To keep track of the follow status
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -24,6 +25,50 @@ const UserProfile = () => {
         fetchUserData();
     }, [username]);
 
+    useEffect(() => {
+        // Check if the user is already followed when the component mounts
+        // For demonstration purposes, you can set a dummy JWT token here
+        // const token = "your_jwt_token_here"; // Replace this with your actual JWT token
+        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImVtYWlsIjoidGF2YW5jaGluaDIwMDJAZ21haWwuY29tIiwidXNlcm5hbWUiOiJ0dmMifSwiaWF0IjoxNjkwOTQ0MTEzLCJleHAiOjE2OTYxMjgxMTN9.ozB96UzVfpyqcYslozzKhAz1fPuYZqqh6PZwexDPNno"
+        if (token) {
+            checkFollowingStatus(token);
+        }
+    }, []);
+
+    const checkFollowingStatus = async (token) => {
+        try {
+            const config = {
+                headers: {
+                    Authorization: `Token ${token}`,
+                },
+            };
+            const response = await axios.get(`https://api.realworld.io/api/profiles/${username}/follow`, config);
+            setIsFollowing(response.data.profile.following);
+        } catch (error) {
+            console.error('Error checking following status:', error);
+        }
+    };
+
+    const handleFollowProfile = async () => {
+        try {
+            // const token = "your_jwt_token_here"; // Replace this with your actual JWT token
+            const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImVtYWlsIjoidGF2YW5jaGluaDIwMDJAZ21haWwuY29tIiwidXNlcm5hbWUiOiJ0dmMifSwiaWF0IjoxNjkwOTQ0MTEzLCJleHAiOjE2OTYxMjgxMTN9.ozB96UzVfpyqcYslozzKhAz1fPuYZqqh6PZwexDPNno"
+            const config = {
+                headers: {
+                    Authorization: `Token ${token}`,
+                },
+            };
+            if (isFollowing) {
+                await axios.delete(`https://api.realworld.io/api/profiles/${username}/follow`, config);
+            } else {
+                await axios.post(`https://api.realworld.io/api/profiles/${username}/follow`, null, config);
+            }
+            setIsFollowing(!isFollowing); // Toggle the follow status
+        } catch (error) {
+            console.error('Error following/unfollowing user:', error);
+        }
+    };
+
     const handleEditProfile = () => {
         navigate(`/settings/${username}`);
     };
@@ -38,11 +83,22 @@ const UserProfile = () => {
 
                     <h4 className='mb-3 mt-3'>{userData.username}</h4>
                     <p className='user-bio mb-3'>{userData.bio}</p>
-                    <Button className='edit-profile-btn' variant="outline-secondary" onClick={handleEditProfile}>
-                        <i className="fa-solid fa-gear"></i> Edit Profile Settings
-                    </Button>
-
-                    {/* <Setting username={username} userData={userData} /> */}
+                    <div>
+                        <Button className='edit-profile-btn' variant="outline-secondary" onClick={handleEditProfile}>
+                            <i className="fa-solid fa-gear"></i> Edit Profile Settings
+                        </Button>
+                        <Button className='follow-profile-btn' variant="outline-secondary" onClick={handleFollowProfile}>
+                            {isFollowing ? (
+                                <>
+                                    <IoMdPersonAdd /> Unfollow {userData.username}
+                                </>
+                            ) : (
+                                <>
+                                    <IoMdPersonAdd /> Follow {userData.username}
+                                </>
+                            )}
+                        </Button>
+                    </div>
                 </div>
             )}
         </>

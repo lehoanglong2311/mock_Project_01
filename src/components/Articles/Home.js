@@ -1,4 +1,4 @@
-import { React, useEffect, useState } from 'react';
+import { React, useEffect, useState,createContext, useContext } from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import { Col } from 'react-bootstrap';
@@ -6,19 +6,24 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { useNavigate, Outlet, NavLink } from 'react-router-dom';
 import './Home.css';
-import { getArticlesGlobal, getPopularTags } from '../../Services/ApiServices';
+import { getArticlesGlobal, getFeed, getPopularTags } from '../../Services/ApiServices';
 import ReactPaginate from 'react-paginate';
 import moment from 'moment';
 import { MdOutlineFavorite } from 'react-icons/md'
+import { UserContext } from '../../App';
 const Home = () => {
     const [articles, setArticles] = useState([])
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [popularTags, setPopularTags] = useState([])
     const navigate = useNavigate();
+    //lay user su dung destructuring { }
+    const {user} = useContext(UserContext);
+    console.log("user",user);
     useEffect(() => {
         fetchArticlesGlobal()
         fetchPopularTags()
+        fetchFeed()
     }, [currentPage])
     const fetchArticlesGlobal = async () => {
         try {
@@ -27,6 +32,23 @@ const Home = () => {
             console.log("res", res);
             setArticles(data)
             setTotalPages(res.data.articlesCount)
+        } catch (error) {
+            console.error(error);
+
+        }
+
+    }
+    //token
+    const token = user.token
+    
+    console.log("token",token);
+    const fetchFeed = async () => {
+        try {
+            const res = await getFeed(token);
+            // const data = res.data.articles
+            console.log("fedd", res);
+            // setArticles(data)
+            // setTotalPages(res.data.articlesCount)
         } catch (error) {
             console.error(error);
 
@@ -62,6 +84,7 @@ const Home = () => {
             <div className='p-5 text-center text-white bg-success'>
                 <h1 className='mb-3'>conduit</h1>
                 <h5 className='mb-3'>A place to share your knowledge.</h5>
+                {/* <h2>{`Hello ${user} again!`}</h2> */}
             </div>
 
 

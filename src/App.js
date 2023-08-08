@@ -6,6 +6,7 @@ import SignUp from './components/LoginSignup/SignUp';
 import UserProfile from './components/Profile/UserProfile';
 import SettingScreen from './components/Profile/SettingScreen';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import ArticlesDetail from './components/Articles/ArticlesDetail';
 
 
 export const router = createBrowserRouter([
@@ -16,6 +17,10 @@ export const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/article/:slug",
+        element: <ArticlesDetail />,
       },
       {
         path: "/login",

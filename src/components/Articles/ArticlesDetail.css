@@ -1,0 +1,15 @@
+.title {
+    padding: 50px;
+}
+
+.button-Follow {
+    color: #afa9a9;
+    border-color: #afa9a9;
+    margin-right: 3px;
+}
+
+.button-Follow:hover {
+
+    background-color: #afa9a9;
+
+}

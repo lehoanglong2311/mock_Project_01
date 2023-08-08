@@ -19,7 +19,7 @@ const Home = () => {
     const navigate = useNavigate();
     //lay user su dung destructuring { }
     const {user} = useContext(UserContext);
-    console.log("user",user);
+    // console.log("user",user);
     useEffect(() => {
         fetchArticlesGlobal()
         fetchPopularTags()
@@ -41,7 +41,7 @@ const Home = () => {
     //token
     const token = user.token
     
-    console.log("token",token);
+    // console.log("token",token);
     const fetchFeed = async () => {
         try {
             const res = await getFeed(token);
@@ -110,7 +110,7 @@ const Home = () => {
                                             <div className="info col-10">
 
                                                 <Nav className="me-auto">
-                                                    <NavLink className="" to="/photos" style={{ fontSize: "15px", color: '#5CB85C' }}>
+                                                    <NavLink className="" to={`/profiles/${article?.author?.username}`} style={{ fontSize: "15px", color: '#5CB85C' }}>
                                                         {article?.author?.username}   </NavLink>
 
                                                 </Nav>

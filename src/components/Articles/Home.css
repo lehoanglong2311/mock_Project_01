@@ -1,6 +1,10 @@
-/* .nav-link .active {
+/* .globalfeed.active {
   color: #5CB85C;
+  border-bottom: #5CB85C;
 } */
+.active {
+  color: #5CB85C;
+}
 a {
   text-decoration: none;
 }
@@ -59,4 +63,56 @@ a:hover {
 .pagination .active a {
   background-color: #5CB85C;
   color: white;
+}
+
+.tag-list-li {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 3px 5px;
+  display: inline-block;
+  margin-right: 5px;
+}
+
+
+.popular-Tags {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 3px 5px;
+  display: inline-block;
+  margin: 5px 5px;
+  background-color: #888585;
+  color: white;
+
+}
+.popular-Tags:hover {
+  background-color: #726f6f
+}
+
+.container-popular-tags {
+  margin-top: 10px;
+  background-color: #e4dddd;
+  padding: 10px 10px;
+  border-radius: 10px
+}
+
+.button-tym {
+  color: #5CB85C;
+  border-color: #5CB85C;
+  border-radius: 10px;
+
+}
+
+.button-tym:hover {
+  color: #fff;
+  background-color: #5CB85C;
+  border-color: #5CB85C;
+}
+.body-articles-content {
+  /* cursor: pointer; */
+}
+.Navlink:hover{
+text-decoration: none;
+}
+.Navlink{
+  color: #999
 }

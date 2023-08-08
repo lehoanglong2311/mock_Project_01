@@ -6,16 +6,19 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { useNavigate, Outlet, NavLink } from 'react-router-dom';
 import './Home.css';
-import { getArticlesGlobal } from '../../Services/ApiServices';
+import { getArticlesGlobal, getPopularTags } from '../../Services/ApiServices';
 import ReactPaginate from 'react-paginate';
 import moment from 'moment';
+import { MdOutlineFavorite } from 'react-icons/md'
 const Home = () => {
     const [articles, setArticles] = useState([])
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
+    const [popularTags, setPopularTags] = useState([])
+    const navigate = useNavigate();
     useEffect(() => {
         fetchArticlesGlobal()
-
+        fetchPopularTags()
     }, [currentPage])
     const fetchArticlesGlobal = async () => {
         try {
@@ -30,11 +33,29 @@ const Home = () => {
         }
 
     }
+    const fetchPopularTags = async () => {
+
+        try {
+            const res = await getPopularTags();
+            console.log("popular tag", res);
+            const data = res.data.tags
+            console.log("popular tag", data);
+
+            setPopularTags(data)
+        } catch (error) {
+            console.log(error);
+        }
+
+
+
+    }
+
     const totalPagesModify = Math.ceil(totalPages / 10);
     const handlePageChange = ({ selected }) => {
         setCurrentPage(selected + 1)
 
     }
+  
     return (
 
         <>
@@ -50,8 +71,8 @@ const Home = () => {
                         <Navbar  >
                             <Container>
                                 <Nav className="me-auto">
-                                    <NavLink className="nav-link" to="/" >Global Feed</NavLink>
-                                    <NavLink className="nav-link" to="/">Your Feed</NavLink>
+                                    <NavLink className=" globalfeed" activeClassName="active" to="/" >Global Feed</NavLink>
+                                    <NavLink className="globalfeed" activeClassName="active" to="/">Your Feed</NavLink>
                                 </Nav>
                             </Container>
                         </Navbar>
@@ -72,32 +93,39 @@ const Home = () => {
                                                 </Nav>
                                                 <span className='text-secondary' > {moment(article?.createdAt).format('MMMM D, YYYY')}</span>
                                             </div>
-                                            <div className="col-1">
-                                                <button>loasd</button>
+                                            <div className="col-2 button-tym-container">
+                                                <button className="btn btn-outline button-tym"><span><MdOutlineFavorite /> {article.favoritesCount} </span></button>
 
                                             </div>
 
                                         </div>
-                                        <div className="body-articles-content"></div>
+                                        {/* onClick={() => { handleClickDetail(article.slug) }} */}
+                                        {/* to={`/article/${article.slug}`} */}
+                                        <div className="body-articles-content" >
+                                            <NavLink className="Navlink"  to={`/article/${article.slug}`}  >
+                                                <h4 style={{ color: 'black' }}>{article.title}</h4>
+                                                <p>{article.description}</p>
 
-                                        <h4>{article.title}</h4>
-                                        <p>{article.description}</p>
-                                        <span>Read more...</span>
 
-                                        {article.tagList.map((tag) => {
-                                            return (
-                                                <>
-                                                    <ul class="tag-list">
-                                                        <li>{tag}</li>
-                                                        
+                                                {article.tagList.map((tag) => {
+                                                    return (
+                                                        <>
 
-                                                    </ul>
-                                                </>
-                                            )
+                                                            <li className="tag-list-li ">{tag}</li>
+                                                        </>
+                                                    )
 
-                                        })
+                                                })
 
-                                        }
+                                                }
+
+                                                <br />
+                                                <span>Read more...</span>
+                                            </NavLink>
+
+                                        </div>
+
+
 
                                         <hr />
                                     </div>
@@ -122,6 +150,7 @@ const Home = () => {
                                 onPageChange={handlePageChange}
                                 containerClassName={'pagination'}
                                 activeClassName={'active'}
+                                // forcePage ={}
                             />
 
                         </div>
@@ -129,7 +158,23 @@ const Home = () => {
 
 
 
-                    <div className="col-md-3"> Popular Tags</div>
+                    <div className="col-md-3">
+
+                        <div className="container-popular-tags">   Popular Tags <br />
+                            {popularTags.map((tags, index) => {
+                                return (
+                                    <>
+
+                                        <li className="popular-Tags">{tags}</li>
+                                    </>
+
+                                )
+                            })
+                            }
+                        </div>
+
+
+                    </div>
                 </div>
             </div>
 

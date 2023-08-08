@@ -1,3 +1,4 @@
+import "./LoginSignUp.css"
 import React from "react";
 import Form from 'react-bootstrap/Form';
 const SignUp = () => {
@@ -9,7 +10,7 @@ const SignUp = () => {
             <div class="col-md-6 offset-md-3 col-xs-12 text-center">
               <h1 class="text-xs-center">Sign up</h1>
               <p class="text-xs-center">
-                <a href="/login" style={{color: 'green '}}>Have an account?</a>
+                <a href="/login" className="need">Have an account?</a>
               </p>
 
               {/* <ul class="error-messages">

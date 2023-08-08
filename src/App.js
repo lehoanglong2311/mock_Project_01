@@ -1,14 +1,15 @@
-import './App.css';
-import NavBar from './components/Articles/NavBar';
-import Home from './components/Articles/Home';
-import SignIn from './components/LoginSignup/SignIn';
-import SignUp from './components/LoginSignup/SignUp';
-import UserProfile from './components/Profile/UserProfile';
-import SettingScreen from './components/Profile/SettingScreen';
+import "./App.css";
+import NavBar from "./components/Articles/NavBar";
+import Home from "./components/Articles/Home";
+import SignIn from "./components/LoginSignup/SignIn";
+import SignUp from "./components/LoginSignup/SignUp";
+import UserProfile from "./components/Profile/UserProfile";
+import SettingScreen from "./components/Profile/SettingScreen";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import ArticlesDetail from './components/Articles/ArticlesDetail';
+import { useState, createContext } from "react";
+import ArticlesDetail from "./components/Articles/ArticlesDetail";
 
-
+export const UserContext = createContext();
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -43,6 +44,11 @@ export const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  const [user, setUser] = useState({});
+  return (
+    <UserContext.Provider value={{ user, setUser }}>
+      <RouterProvider router={router} />
+    </UserContext.Provider>
+  );
 }
 export default App;

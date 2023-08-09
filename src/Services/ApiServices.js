@@ -12,8 +12,8 @@ const getArticleDetail = (slugs) => {
     return axios.get(`https://api.realworld.io/api//articles/${slugs}`);
 
 }
-const getArticleFollow = (token) => {
-    return axios.get(`https://api.realworld.io/api//articles/feed`, {
+const getArticleFollow = (token,currentPageFollow) => {
+    return axios.get(`https://api.realworld.io/api//articles/feed?limit=10&offset=${(currentPageFollow - 1) * 10}`, {
         headers: {
             'Authorization': `Bearer ${token}`
         }

@@ -12,7 +12,7 @@ const getArticleDetail = (slugs) => {
     return axios.get(`https://api.realworld.io/api//articles/${slugs}`);
 
 }
-const getFeed = (token) => {
+const getArticleFollow = (token) => {
     return axios.get(`https://api.realworld.io/api//articles/feed`, {
         headers: {
             'Authorization': `Bearer ${token}`
@@ -20,4 +20,4 @@ const getFeed = (token) => {
     });
 
 }
-export { getFeed, getArticleDetail, getArticlesGlobal, getPopularTags }
+export { getArticleFollow, getArticleDetail, getArticlesGlobal, getPopularTags }

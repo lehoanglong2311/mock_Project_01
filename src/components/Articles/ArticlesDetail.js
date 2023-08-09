@@ -2,7 +2,7 @@ import { useNavigate, Outlet, NavLink, useParams } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import { MdOutlineFavorite } from 'react-icons/md'
-import {AiOutlinePlus} from 'react-icons/ai'
+import { AiOutlinePlus } from 'react-icons/ai'
 import './ArticlesDetail.css'
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -16,11 +16,9 @@ const ArticlesDetail = () => {
     const fetchArticleDetail = async () => {
         try {
             const res = await getArticleDetail(slug)
-            console.log("detail", res);
+            // console.log("detail", res);
             const data = res.data.article
             console.log("data", data);
-
-
             setArticle(data)
 
         } catch (error) {
@@ -40,22 +38,53 @@ const ArticlesDetail = () => {
                         <div className="info">
 
                             <Nav className="me-auto">
-                                <NavLink className="" to="/photos" style={{ fontSize: "15px", color: '#5CB85C' }}>
+                                <NavLink className="" to={`/profiles/${article?.author?.username}`}style={{ fontSize: "15px", color: '#5CB85C' }}>
                                     {article?.author?.username}   </NavLink>
 
                             </Nav>
                             <span className='text-secondary' > {moment(article?.createdAt).format('MMMM D, YYYY')}</span>
                         </div>
                         <div className="col-5 ">
-                        <button className="btn btn-outline button-Follow"><span><AiOutlinePlus />Favorites Article {article.favoritesCount} </span></button>
+                            <button className="btn btn-outline button-Follow"><span><AiOutlinePlus />Follow Article {article.favoritesCount} </span></button>
 
                             <button className="btn btn-outline button-tym"><span><MdOutlineFavorite />Favorites Article {article.favoritesCount} </span></button>
                         </div>
 
 
                     </div>
+
+                </div>
+
+            </div>
+            <div className="body-Article-detail container my-5">
+                <div className="body-text-detail">
+                    <p>  {article.body}</p>
+                </div>
+                <hr />
+            </div>
+
+            <div className="Comments-header ">
+                <div className="header-articles-content d-flex justify-content-center">
+                    <img src={article?.author?.image} className="rounded-circle" alt="Cinque Terre" width="40" height="40" />
+                    <div className="info">
+
+                        <Nav className="me-auto">
+                            <NavLink className="" to={`/profiles/${article?.author?.username}`}style={{ fontSize: "15px", color: '#5CB85C' }}>
+                                {article?.author?.username}   </NavLink>
+
+                        </Nav>
+                        <span className='text-secondary' > {moment(article?.createdAt).format('MMMM D, YYYY')}</span>
+                    </div>
+                    <div className="col-4 ">
+                        <button className="btn btn-outline button-Follow"><span><AiOutlinePlus />Follow Article {article.favoritesCount} </span></button>
+
+                        <button className="btn btn-outline button-tym"><span><MdOutlineFavorite />Favorites Article {article.favoritesCount} </span></button>
+                    </div>
+
+
                 </div>
             </div>
+            <div className="comments-body"></div>
 
         </div>
     );

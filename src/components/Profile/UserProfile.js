@@ -1,19 +1,21 @@
-import React, { useEffect, useState , useContext} from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 import './UserProfile.css';
 import Button from 'react-bootstrap/Button';
 import { useParams, useNavigate } from 'react-router-dom';
-import { IoMdPersonAdd } from 'react-icons/io'; // Import IoMdPersonAdd icon from react-icons/io
+import { IoMdPersonAdd } from 'react-icons/io';
 import { UserContext } from '../../App';
 
 const UserProfile = () => {
     const { username } = useParams();
     const [userData, setUserData] = useState(null);
-    const [isFollowing, setIsFollowing] = useState(false); // To keep track of the follow status
+    const [isFollowing, setIsFollowing] = useState(false);
     const navigate = useNavigate();
-    const {user} = useContext(UserContext);
-    console.log("chinhuser",user);
+    const { user } = useContext(UserContext);
+    const loggedInUserName = user.username;
+    const token = user.token
+
     useEffect(() => {
         const fetchUserData = async () => {
             try {
@@ -28,16 +30,11 @@ const UserProfile = () => {
     }, [username]);
 
     useEffect(() => {
-        // Check if the user is already followed when the component mounts
-        // For demonstration purposes, you can set a dummy JWT token here
-        // const token = "your_jwt_token_here"; // Replace this with your actual JWT token
-        // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImVtYWlsIjoidGF2YW5jaGluaDIwMDJAZ21haWwuY29tIiwidXNlcm5hbWUiOiJ0dmMifSwiaWF0IjoxNjkwOTQ0MTEzLCJleHAiOjE2OTYxMjgxMTN9.ozB96UzVfpyqcYslozzKhAz1fPuYZqqh6PZwexDPNno"
-        if (token) {
-            checkFollowingStatus(token);
+        if (user.token) {
+            checkFollowingStatus(user.token);
         }
-    }, []);
-    const token = user.token
-    console.log("chinh token",token);
+    }, [user.token]);
+
     const checkFollowingStatus = async (token) => {
         try {
             const config = {
@@ -54,8 +51,6 @@ const UserProfile = () => {
 
     const handleFollowProfile = async () => {
         try {
-            // const token = "your_jwt_token_here"; // Replace this with your actual JWT token
-            // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImVtYWlsIjoidGF2YW5jaGluaDIwMDJAZ21haWwuY29tIiwidXNlcm5hbWUiOiJ0dmMifSwiaWF0IjoxNjkwOTQ0MTEzLCJleHAiOjE2OTYxMjgxMTN9.ozB96UzVfpyqcYslozzKhAz1fPuYZqqh6PZwexDPNno"
             const config = {
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -87,20 +82,23 @@ const UserProfile = () => {
                     <h4 className='mb-3 mt-3'>{userData.username}</h4>
                     <p className='user-bio mb-3'>{userData.bio}</p>
                     <div>
-                        <Button className='edit-profile-btn' variant="outline-secondary" onClick={handleEditProfile}>
-                            <i className="fa-solid fa-gear"></i> Edit Profile Settings
-                        </Button>
-                        <Button className='follow-profile-btn' variant="outline-secondary" onClick={handleFollowProfile}>
-                            {isFollowing ? (
-                                <>
-                                    <IoMdPersonAdd /> Unfollow {userData.username}
-                                </>
-                            ) : (
-                                <>
-                                    <IoMdPersonAdd /> Follow {userData.username}
-                                </>
-                            )}
-                        </Button>
+                        {loggedInUserName === username ? ( // Check if the logged-in user matches the profile's user
+                            <Button className='edit-profile-btn' variant="outline-secondary" onClick={handleEditProfile}>
+                                <i className="fa-solid fa-gear"></i> Edit Profile Settings
+                            </Button>
+                        ) : (
+                            <Button className='follow-profile-btn' variant="outline-secondary" onClick={handleFollowProfile}>
+                                {isFollowing ? (
+                                    <>
+                                        <IoMdPersonAdd /> Unfollow {userData.username}
+                                    </>
+                                ) : (
+                                    <>
+                                        <IoMdPersonAdd /> Follow {userData.username}
+                                    </>
+                                )}
+                            </Button>
+                        )}
                     </div>
                 </div>
             )}

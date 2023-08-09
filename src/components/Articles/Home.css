@@ -170,3 +170,6 @@ a:hover {
     transform: rotate(360deg);
   }
 }
+.hide-pagination {
+  display: none;
+}

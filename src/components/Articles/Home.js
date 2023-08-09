@@ -14,6 +14,7 @@ import { UserContext } from '../../App';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 const Home = () => {
     const [articles, setArticles] = useState([])
+    const [tab, setTab] = useState('global feed')
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [popularTags, setPopularTags] = useState([])
@@ -24,10 +25,15 @@ const Home = () => {
     const { user } = useContext(UserContext);
     // console.log("user",user);
     useEffect(() => {
-        fetchArticlesGlobal()
+        if (tab === 'global feed') {
+            fetchArticlesGlobal()
+        }
+        if (tab === "your feed") {
+            fetchArticleFollow()
+        }
         fetchPopularTags()
-        fetchArticleFollow()
-    }, [currentPage])
+    }, [currentPage, tab])
+    console.log("tab",tab);
     const fetchArticlesGlobal = async () => {
         try {
             setIsLoading(true);
@@ -37,6 +43,7 @@ const Home = () => {
             setArticles(data)
             setTotalPages(res.data.articlesCount)
             setIsLoading(false);
+          
         } catch (error) {
             console.error(error);
 
@@ -49,11 +56,16 @@ const Home = () => {
     // console.log("token",token);
     const fetchArticleFollow = async () => {
         try {
-            const res = await getArticleFollow(token);
-            // const data = res.data.articles
-            console.log("fedd", res);
-            // setArticles(data)
-            // setTotalPages(res.data.articlesCount)
+            setIsLoading(true);
+            const res = await getArticleFollow(token,currentPage);
+             const data = res.data.articles
+            console.log("your feed", res);
+             setArticles(data)
+             setTotalPages(res.data.articlesCount)
+            setIsLoading(false);
+            
+            
+
         } catch (error) {
             console.error(error);
 
@@ -78,15 +90,24 @@ const Home = () => {
     }
 
     const totalPagesModify = Math.ceil(totalPages / 10);
+console.log("totalPagesModify",totalPagesModify);
     const handlePageChange = ({ selected }) => {
+        console.log("selected",selected);
         setCurrentPage(selected + 1)
     }
+   
+    console.log("currentPage",currentPage);
     const handleChangeYourFeed = () => {
         setIsYourFeed(true)
-
+        setTab("your feed")
+        setCurrentPage(1)
     }
     const handleChangeGlobalFeed = () => {
         setIsYourFeed(false)
+        setTab("global feed")
+        setCurrentPage(1)
+
+
     }
 
     return (
@@ -124,10 +145,7 @@ const Home = () => {
                                 )
                                     :
                                     (
-                                        isYourFeed ? <>
-                                            <div className="">your feed</div>
-                                        </>
-                                            :
+                                        
                                             articles.map((article, index) => {
                                                 return (
                                                     <div className="articles-content">
@@ -194,7 +212,9 @@ const Home = () => {
 
 
                         </div>
-                        <div className="pagination">
+                       {
+
+                    <div className={`pagination ${isLoading ? 'hide-pagination' : ''}`}>
                             <ReactPaginate
                                 previousLabel={null}
                                 nextLabel={null}
@@ -207,10 +227,14 @@ const Home = () => {
                                 onPageChange={handlePageChange}
                                 containerClassName={'pagination'}
                                 activeClassName={'active'}
+                                //đặt lại mỗi khi thay đổi trang đã set currentpage thành 1 , nên khi chuyển trang sẽ hiển thị trang đầu tiên 1-1 = 0
+                                //forcePage được sử dụng để ép buộc component ReactPaginate hiển thị một trang cụ thể. lúc này activeClassName cũng hoạt động theo forcePage
+                                forcePage={currentPage - 1} 
                             // forcePage ={}
                             />
 
                         </div>
+                       } 
                     </div>
 
 

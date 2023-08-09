@@ -13,6 +13,7 @@ const NavBar = () => {
     const { user } = useContext(UserContext);
     console.log("us", user);
     const token = user.token
+    const username = user.username;
 
     return (
         <div style={{ minHeight: '100vh', position: 'relative' }}>
@@ -24,8 +25,8 @@ const NavBar = () => {
                         {token ?
                             <>
                                 <NavLink className="nav-link" activeClassName="active" to="/registers"> <span><GrArticle /> </span> New Article</NavLink>
-                                <NavLink className="nav-link" activeClassName="active" to="/register"><span><AiFillSetting /> </span>Settings</NavLink>
-                                <NavLink className="nav-link" activeClassName="active" to="/registers">
+                                <NavLink className="nav-link" activeClassName="active" to={`/settings/${username}`}><span><AiFillSetting /> </span>Settings</NavLink>
+                                <NavLink className="nav-link" activeClassName="active" to={`/profiles/${username}`}>
                                     <img src={user.image} className="rounded-circle mx-1" alt="Cinque Terre" width="30" height="30" />
 
                                     {user.username}</NavLink>

@@ -11,7 +11,7 @@ import ReactPaginate from 'react-paginate';
 import moment from 'moment';
 import { MdOutlineFavorite } from 'react-icons/md'
 import { UserContext } from '../../App';
-import {AiOutlineLoading3Quarters} from 'react-icons/ai'
+import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 const Home = () => {
     const [articles, setArticles] = useState([])
     const [currentPage, setCurrentPage] = useState(1);

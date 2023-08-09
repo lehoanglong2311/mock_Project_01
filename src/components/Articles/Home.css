@@ -2,9 +2,9 @@
   color: #5CB85C;
   border-bottom: #5CB85C;
 } */
-.active {
+/* .active {
   color: #5CB85C;
-}
+} */
 a {
   text-decoration: none;
 }
@@ -84,6 +84,7 @@ a:hover {
   color: white;
 
 }
+
 .popular-Tags:hover {
   background-color: #726f6f
 }
@@ -107,12 +108,65 @@ a:hover {
   background-color: #5CB85C;
   border-color: #5CB85C;
 }
+
 .body-articles-content {
   /* cursor: pointer; */
 }
-.Navlink:hover{
-text-decoration: none;
+
+.Navlink:hover {
+  text-decoration: none;
 }
-.Navlink{
+
+.Navlink {
   color: #999
+}
+
+.nav-link {
+  color: #b8b4b4
+}
+
+.nav-link:hover {
+  color: #5CB85C;
+  text-decoration: none
+}
+
+.navbar-nav .nav-link.active,
+.navbar-nav .nav-link.show {
+  color: #59af59;
+}
+
+.Feed {
+  color: #b8b4b4;
+  text-decoration: none;
+  margin-left: 15px
+}
+
+.Feed:hover {
+  text-decoration: none;
+  color: #292727;
+}
+
+.activeFeed {
+  color: #5CB85C;
+  text-decoration: none;
+  border-bottom: 1px solid #59af59
+}
+
+.activeFeed:hover {
+  text-decoration: none;
+  color: #5CB85C;
+
+
+}
+.loading-icon {
+  animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }

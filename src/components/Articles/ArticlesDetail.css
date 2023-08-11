@@ -22,3 +22,32 @@
 .Comments-header {
     text-align: center;
 }
+
+.comment-card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(760px, 1fr));
+  grid-gap: 10px;
+}
+
+.comment-card {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.comment-area {
+  width: 100%;
+  border: none;
+  resize: none;
+}
+
+.header-articles-content {
+  padding: 10px;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.info {
+  margin-left: 10px;
+}

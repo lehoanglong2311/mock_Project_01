@@ -22,13 +22,17 @@ const Home = () => {
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
     //lay user su dung destructuring { }
-    const { user } = useContext(UserContext);
+    //lấy token const token = localStorage.getItem('userToken');
+    // thay vì user.token vì khi load lại trang vẫn ok chứ không bị mất những bài đăng của mình.
+    const { user,token } = useContext(UserContext);
+
     // console.log("user",user);
     useEffect(() => {
         // if (!token) {
         //     navigate('/login'); // Chuyển hướng đến trang đăng nhập nếu không có token
         //     return;
         //   }
+        
         if (tab === 'global feed') {
             fetchArticlesGlobal()
         }
@@ -41,6 +45,7 @@ const Home = () => {
     const fetchArticlesGlobal = async () => {
         try {
             setIsLoading(true);
+            //chưa có token thì load những bài ko cần token,còn có rồi thì load những bài cần token, ví dụ như bài đăng của chính mình
             const res = await getArticlesGlobal(currentPage,token?token: "");
             const data = res.data.articles
             console.log("res", res);
@@ -55,7 +60,7 @@ const Home = () => {
 
     }
     //token
-    const token = user.token
+    // const token = user.token
 
     // console.log("token",token);
     const fetchArticleFollow = async () => {

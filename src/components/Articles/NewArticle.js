@@ -13,7 +13,7 @@ const NewArticle = () => {
 
     const handleSubmit = (values) => {
         // Xử lý logic khi form được submit
-        console.log(values);
+        console.log("form",values);
     };
 
     const validateForm = (values) => {
@@ -46,19 +46,19 @@ const NewArticle = () => {
                             </div>
                             <div className='my-2'>
 
-                                <Field type="text" placeholder="What's this article about?" name="title" className="form-control form-control-lg" />
+                                <Field type="text" placeholder="What's this article about?" name="description" className="form-control form-control-lg" />
                                 <ErrorMessage name="description" component="div" />
 
                             </div>
                             <div className='my-2'>
 
-                                <Field as="textarea" rows="8" placeholder="Write your article (in markdown)" name="title" className="form-control form-control-lg" />
+                                <Field as="textarea" rows="8" placeholder="Write your article (in markdown)" name="body" className="form-control form-control-lg" />
                                 <ErrorMessage name="body" component="div" />
 
                             </div>
                             <div className='my-2'>
 
-                                <Field type="text" placeholder="Enter tags" name="title" className="form-control form-control-lg" />
+                                <Field type="text" placeholder="Enter tags" name="tagList" className="form-control form-control-lg" />
                                 <ErrorMessage name="tagList" component="div" />
 
                             </div>

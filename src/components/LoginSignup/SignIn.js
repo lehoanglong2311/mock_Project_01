@@ -23,6 +23,7 @@ const SignIn = () => {
       .post("https://api.realworld.io/api/users/login", data)
       .then((res) => {
         setUser(res.data.user);
+        localStorage.setItem('userToken', res.data.user.token);
         nav("/");
       })
       .catch((error) => {

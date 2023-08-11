@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import Container from 'react-bootstrap/Container';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import { Row, Col } from 'react-bootstrap';
+import { UserContext } from '../../App';
+import { useNavigate } from "react-router-dom";
 
 const Setting = ({ username }) => {
+  const { logout } = useContext(UserContext);
   const [userData, setUserData] = useState({
     image: '',
     username: '',
@@ -45,6 +48,14 @@ const Setting = ({ username }) => {
       console.error('Error updating settings:', error);
       alert('Failed to update settings. Please try again later.');
     }
+  };
+
+  const nav = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('userToken');
+    logout();
+    nav("/");
   };
 
 
@@ -129,7 +140,7 @@ const Setting = ({ username }) => {
 
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <Button type='submit' variant="primary">Update Settings</Button>
-              <Button variant="outline-danger" className='text-success'>Or Click here to logout</Button>
+              <Button variant="outline-danger" className='text-success' onClick={handleLogout}>Or Click here to logout</Button>
             </div>
           </form>
         )}

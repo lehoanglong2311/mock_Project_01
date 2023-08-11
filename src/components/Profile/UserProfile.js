@@ -3,9 +3,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 import './UserProfile.css';
 import Button from 'react-bootstrap/Button';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, NavLink } from 'react-router-dom';
 import { IoMdPersonAdd } from 'react-icons/io';
 import { UserContext } from '../../App';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import Container from 'react-bootstrap/Container';
 
 const UserProfile = () => {
     const { username } = useParams();
@@ -50,6 +53,11 @@ const UserProfile = () => {
     };
 
     const handleFollowProfile = async () => {
+        if (!user.token) {
+            navigate('/login');
+            return;
+        }
+
         try {
             const config = {
                 headers: {
@@ -101,7 +109,18 @@ const UserProfile = () => {
                         )}
                     </div>
                 </div>
+                
             )}
+            <div>
+                <Navbar  >
+                    <Container>
+                        <Nav className="profile-articles">
+                            <NavLink >My Articles</NavLink>
+                            <NavLink >Favorited Articles</NavLink>
+                        </Nav>
+                    </Container>
+                </Navbar>
+            </div>
         </>
     );
 };

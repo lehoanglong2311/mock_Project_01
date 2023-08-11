@@ -61,8 +61,8 @@ function App() {
     localStorage.removeItem('userToken');
   };
 
+  const token = localStorage.getItem('userToken');
   useEffect(() => {
-    const token = localStorage.getItem('userToken');
     if (token) {
       axios.get('https://api.realworld.io/api/user', {
         headers: {
@@ -77,7 +77,7 @@ function App() {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, setUser, logout }}>
+    <UserContext.Provider value={{ user, setUser, logout ,token}}>
       <RouterProvider router={router} />
     </UserContext.Provider>
   );

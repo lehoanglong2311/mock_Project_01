@@ -25,6 +25,10 @@ const Home = () => {
     const { user } = useContext(UserContext);
     // console.log("user",user);
     useEffect(() => {
+        // if (!token) {
+        //     navigate('/login'); // Chuyển hướng đến trang đăng nhập nếu không có token
+        //     return;
+        //   }
         if (tab === 'global feed') {
             fetchArticlesGlobal()
         }
@@ -37,7 +41,7 @@ const Home = () => {
     const fetchArticlesGlobal = async () => {
         try {
             setIsLoading(true);
-            const res = await getArticlesGlobal(currentPage,token);
+            const res = await getArticlesGlobal(currentPage,token?token: "");
             const data = res.data.articles
             console.log("res", res);
             setArticles(data)
@@ -57,7 +61,8 @@ const Home = () => {
     const fetchArticleFollow = async () => {
         try {
             setIsLoading(true);
-            const res = await getArticleFollow(token,currentPage);
+            
+            const res =  await getArticleFollow(token,currentPage);
              const data = res.data.articles
             console.log("your feed", res);
              setArticles(data)

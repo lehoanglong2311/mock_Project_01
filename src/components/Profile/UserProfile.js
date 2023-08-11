@@ -3,12 +3,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 import './UserProfile.css';
 import Button from 'react-bootstrap/Button';
-import { useParams, useNavigate, NavLink } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { IoMdPersonAdd } from 'react-icons/io';
 import { UserContext } from '../../App';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
+import { Row, Col } from 'react-bootstrap';
 
 const UserProfile = () => {
     const { username } = useParams();
@@ -109,15 +110,27 @@ const UserProfile = () => {
                         )}
                     </div>
                 </div>
-                
             )}
+        
             <div>
                 <Navbar  >
                     <Container>
-                        <Nav className="profile-articles">
-                            <NavLink >My Articles</NavLink>
-                            <NavLink >Favorited Articles</NavLink>
-                        </Nav>
+                        <Row>
+                            <Col xs="12">
+                                <Nav variant="underline" defaultActiveKey="/">
+                                    <Nav.Item>
+                                        <Nav.Link href="/#test1">
+                                            My Articles
+                                        </Nav.Link>
+                                    </Nav.Item>
+                                    <Nav.Item>
+                                        <Nav.Link eventKey="/#test2">
+                                            Favorited Articles
+                                        </Nav.Link>
+                                    </Nav.Item>
+                                </Nav>
+                            </Col>
+                        </Row>
                     </Container>
                 </Navbar>
             </div>

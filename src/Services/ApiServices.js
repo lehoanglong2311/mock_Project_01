@@ -7,6 +7,9 @@ const getArticlesGlobal = (currentPage,token) => {
     });
 
 }
+
+
+
 const getPopularTags = () => {
     return axios.get(`https://api.realworld.io/api//tags`);
 

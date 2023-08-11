@@ -1,5 +1,5 @@
 import { React, useEffect, useState, createContext, useContext } from 'react';
-
+import { useNavigate, Outlet, NavLink } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import './NewArticle.css';
 import { postNewArticle } from '../../Services/ApiServices';
@@ -15,6 +15,7 @@ const NewArticle = () => {
     };
     const { user } = useContext(UserContext);
     const token = user.token
+    const navigate = useNavigate();
 
     const handleSubmit = async (values) => {
         const data = {
@@ -27,6 +28,7 @@ const NewArticle = () => {
         try {
             const res = await postNewArticle(token, data)
             console.log("res from form", res);
+            // navigate(`/article/${}`)
             // const data = res.data
             // console.log("res from form", data);
         } catch (error) {

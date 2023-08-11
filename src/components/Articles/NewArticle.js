@@ -1,6 +1,9 @@
-import React from 'react';
+import { React, useEffect, useState, createContext, useContext } from 'react';
+
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import './NewArticle.css';
+import { postNewArticle } from '../../Services/ApiServices';
+import { UserContext } from '../../App';
 const NewArticle = () => {
     const initialValues = {
         title: "",
@@ -10,10 +13,25 @@ const NewArticle = () => {
 
         ]
     };
+    const { user } = useContext(UserContext);
+    const token = user.token
 
-    const handleSubmit = (values) => {
+    const handleSubmit = async (values) => {
+        const data = {
+            article: {
+                ...values
+            }
+        }
         // Xử lý logic khi form được submit
-        console.log("form",values);
+        // console.log("form", data);
+        try {
+            const res = await postNewArticle(token, data)
+            console.log("res from form", res);
+            // const data = res.data
+            // console.log("res from form", data);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     const validateForm = (values) => {

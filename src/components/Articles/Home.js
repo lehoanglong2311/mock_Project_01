@@ -37,7 +37,7 @@ const Home = () => {
     const fetchArticlesGlobal = async () => {
         try {
             setIsLoading(true);
-            const res = await getArticlesGlobal(currentPage);
+            const res = await getArticlesGlobal(currentPage,token);
             const data = res.data.articles
             console.log("res", res);
             setArticles(data)
@@ -88,7 +88,7 @@ const Home = () => {
 
 
     }
-
+console.log("golobal",articles);
     const totalPagesModify = Math.ceil(totalPages / 10);
 console.log("totalPagesModify",totalPagesModify);
     const handlePageChange = ({ selected }) => {

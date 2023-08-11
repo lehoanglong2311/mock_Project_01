@@ -8,6 +8,7 @@ import SettingScreen from "./components/Profile/SettingScreen";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { useState, createContext } from "react";
 import ArticlesDetail from "./components/Articles/ArticlesDetail";
+import NewArticle from "./components/Articles/NewArticle";
 
 export const UserContext = createContext();
 export const router = createBrowserRouter([
@@ -18,6 +19,10 @@ export const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/editor",
+        element: <NewArticle />,
       },
       {
         path: "/article/:slug",

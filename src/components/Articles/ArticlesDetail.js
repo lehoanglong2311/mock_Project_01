@@ -24,7 +24,7 @@ console.log("uer",user);
         fetchArticleDetail()
         fetchComments()
     }, [])
-   
+//    console.log("comments",);
     const fetchArticleDetail = async () => {
         try {
             setIsLoading(true);
@@ -139,12 +139,13 @@ console.log("uer",user);
 
                         <button className="btn btn-outline button-tym"><span><MdOutlineFavorite />Favorites Article {article.favoritesCount} </span></button>
                     </div>
-
+ 
 
                 </div>
             </div>
 
             <div className="comments-body  ">
+                
                 <div className="input-container ">
                     <p style={{ marginLeft: 260, marginTop: 40 }}>Sign in or sign up to add comments on this article.</p>
                     <div className="comment-card-container row d-flex justify-content-center">
@@ -168,7 +169,9 @@ console.log("uer",user);
                             </div>
                         ))}
                     </div>
+                    
                 </div>
+                
             </div>
                                     </>
                                   

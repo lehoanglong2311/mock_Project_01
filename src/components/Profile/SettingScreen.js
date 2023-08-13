@@ -10,16 +10,20 @@ const SettingScreen = () => {
 
     useEffect(() => {
         const fetchUserData = async () => {
-            try {
-                const response = await axios.get(`https://api.realworld.io/api/profiles/${username}`);
-                setUserData(response.data.profile);
-            } catch (error) {
-                console.error('Error fetching user data:', error);
-            }
+          try {
+            const response = await axios.get("https://api.realworld.io/api/user", {
+              headers: {
+                Authorization: `Token ${localStorage.getItem("userToken")}`,
+              },
+            });
+            setUserData(response.data.user);
+          } catch (error) {
+            console.error("Error fetching user data:", error);
+          }
         };
-
+    
         fetchUserData();
-    }, [username]);
+      }, []);
 
     return (
         <>

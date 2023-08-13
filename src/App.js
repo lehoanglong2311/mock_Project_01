@@ -8,6 +8,7 @@ import SettingScreen from "./components/Profile/SettingScreen";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { useState, createContext, useEffect } from "react";
 import ArticlesDetail from "./components/Articles/ArticlesDetail";
+import NewArticle from "./components/Articles/NewArticle";
 import axios from "axios";
 
 
@@ -24,6 +25,10 @@ export const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/editor",
+        element: <NewArticle />,
       },
       {
         path: "/article/:slug",
@@ -56,8 +61,8 @@ function App() {
     localStorage.removeItem('userToken');
   };
 
+  const token = localStorage.getItem('userToken');
   useEffect(() => {
-    const token = localStorage.getItem('userToken');
     if (token) {
       axios.get('https://api.realworld.io/api/user', {
         headers: {
@@ -72,7 +77,7 @@ function App() {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, setUser, logout }}>
+    <UserContext.Provider value={{ user, setUser, logout ,token}}>
       <RouterProvider router={router} />
     </UserContext.Provider>
   );

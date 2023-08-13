@@ -73,3 +73,17 @@
 .info {
   margin-left: 10px;
 }
+
+.comment-area1 {
+  width: 100%;
+  border: none;
+  border-color: white;
+}
+textarea:focus {
+  outline: none;
+}
+
+.comments-body1 {
+  margin-top: 30px;
+  margin-bottom: 10px;
+}

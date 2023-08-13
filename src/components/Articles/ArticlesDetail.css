@@ -51,3 +51,12 @@
 .info {
   margin-left: 10px;
 }
+
+.comment-area1 {
+  width: 100%;
+  border: none;
+  border-color: white;
+}
+textarea:focus {
+  outline: none;
+}

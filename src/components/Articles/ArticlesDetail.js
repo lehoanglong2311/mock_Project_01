@@ -44,6 +44,23 @@ const ArticlesDetail = () => {
 
     }
 
+    const PostComments = async () => {
+        try {
+            const res = await axios.post(`https://api.realworld.io/api//articles/${slug}/comments`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            console.log("comments", res);
+            const data = res.data.comments
+            console.log("long", data);
+            setComments(data)
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
         <div>
             <div className='title  text-center text-white bg-dark'>
@@ -102,14 +119,30 @@ const ArticlesDetail = () => {
                 </div>
             </div>
 
+            {/* form comments */}
+            <div className="comments-body1">
+                <div className="input-container1 ">
+                    <div className="card-container row d-flex justify-content-center">
+                        <div className="comment-card  col-7 ">
+                                <div className="card-body ">
+                                    <textarea placeholder='Write a comment...' className="comment-area1" rows="5" ></textarea>
+                                    <div className="header-articles-content d-flex">
+                                        <img  className="rounded-circle" alt="Cinque Terre" width="20" height="20" />
+                                        <button type='button' className="btn btn-success btn-sm" style={{marginLeft: 940}}>Post Comment</button>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+
             <div className="comments-body  ">
                 <div className="input-container ">
-                    <p style={{ marginLeft: 260, marginTop: 40}}>Sign in or sign up to add comments on this article.</p>
+                    <p style={{ marginLeft: 392, marginTop: 40 }}>Sign in or sign up to add comments on this article.</p>
                     <div className="comment-card-container row d-flex justify-content-center">
                         {comments.map((comment) => (
                             <div key={comment.id} className="comment-card  col-7 ">
                                 <div className="card-body ">
-                                    {/* <textarea className="comment-area" rows="5" value={`${comment.body}`} readOnly></textarea> */}
                                     <p className='card-text'>{`${comment.body}`}</p>
                                     <div className="header-articles-content d-flex">
                                         <img src={comment?.author?.image} className="rounded-circle" alt="Cinque Terre" width="20" height="20" />

@@ -10,9 +10,9 @@ import { AiFillSetting } from 'react-icons/ai'
 import { GrArticle } from 'react-icons/gr'
 import './Home.css'
 const NavBar = () => {
-    const { user } = useContext(UserContext);
+    const { user,token } = useContext(UserContext);
     console.log("us", user);
-    const token = user.token
+    // const token = user.token
     const username = user.username;
 
     return (

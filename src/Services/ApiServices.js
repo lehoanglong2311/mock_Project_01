@@ -35,4 +35,12 @@ const getArticleFollow = (token, currentPageFollow) => {
     });
 
 }
-export { postNewArticle, getArticleFollow, getArticleDetail, getArticlesGlobal, getPopularTags }
+const getCurrentUser = (token) => {
+    return axios.get(`https://api.realworld.io/api/user`, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
+
+}
+export {getCurrentUser, postNewArticle, getArticleFollow, getArticleDetail, getArticlesGlobal, getPopularTags }

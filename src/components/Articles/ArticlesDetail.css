@@ -13,6 +13,28 @@
     background-color: #afa9a9;
 
 }
+.button-edit {
+  color: #afa9a9;
+  border-color: #afa9a9;
+  margin-right: 3px;
+}
+
+.button-edit:hover {
+
+  background-color: #afa9a9;
+
+}
+.button-delete {
+  color: #703030;
+  border-color: #703030;
+  margin-right: 3px;
+}
+
+.button-delete:hover {
+
+  background-color: #703030;
+
+}
 .body-text-detail{
     font-family: 'Source Serif Pro', serif;
     font-size: 1.2rem;

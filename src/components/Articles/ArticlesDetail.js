@@ -17,6 +17,7 @@ const ArticlesDetail = () => {
     const { user, token } = useContext(UserContext);
     const [isLoading, setIsLoading] = useState(true);
     const [newComment, setNewComment] = useState("")
+    const navigate = useNavigate();
 
     console.log("uer", user);
     useEffect(() => {
@@ -25,7 +26,7 @@ const ArticlesDetail = () => {
         fetchArticleDetail()
         fetchComments()
     }, [])
-   
+
     const fetchArticleDetail = async () => {
         try {
             setIsLoading(true);
@@ -92,6 +93,9 @@ const ArticlesDetail = () => {
             console.log(error);
         }
     }
+    const handleEditArticle = () => {
+        navigate(`/editor/${slug}`, { state: { article } })
+    }
     return (
         <div>
             {
@@ -123,7 +127,7 @@ const ArticlesDetail = () => {
 
                                             user?.username == article?.author?.username ?
                                                 <>
-                                                    <button className="btn btn-outline button-edit"><span><AiFillEdit />Edit Article </span></button>
+                                                    <button className="btn btn-outline button-edit" onClick={() => { handleEditArticle() }}><span><AiFillEdit />Edit Article </span></button>
                                                     <button className="btn btn-outline button-delete"><span><AiFillDelete />Delete Article  </span></button>
                                                 </>
 
@@ -146,6 +150,17 @@ const ArticlesDetail = () => {
                             <div className="body-Article-detail container my-5">
                                 <div className="body-text-detail">
                                     <p>  {article.body}</p>
+                                    {article.tagList.map((tag) => {
+                                        return (
+                                            <>
+
+                                                <li className="tag-list-li ">{tag}</li>
+                                            </>
+                                        )
+
+                                    })
+
+                                    }
                                 </div>
                                 <hr />
                             </div>

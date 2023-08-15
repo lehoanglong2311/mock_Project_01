@@ -27,6 +27,14 @@ const postNewArticle = (token, data) => {
     });
 
 }
+const EditPutArticle = (token, data,slug) => {
+    return axios.put(`https://api.realworld.io/api//articles/${slug}`, data, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
+
+}
 const getArticleFollow = (token, currentPageFollow) => {
     return axios.get(`https://api.realworld.io/api//articles/feed?limit=10&offset=${(currentPageFollow - 1) * 10}`, {
         headers: {
@@ -43,4 +51,4 @@ const getCurrentUser = (token) => {
     });
 
 }
-export {getCurrentUser, postNewArticle, getArticleFollow, getArticleDetail, getArticlesGlobal, getPopularTags }
+export {EditPutArticle,getCurrentUser, postNewArticle, getArticleFollow, getArticleDetail, getArticlesGlobal, getPopularTags }

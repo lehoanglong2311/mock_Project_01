@@ -6,7 +6,7 @@ import { AiOutlinePlus, AiFillDelete, AiFillEdit, AiOutlineLoading3Quarters } fr
 import './ArticlesDetail.css'
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import { getArticleDetail, getCurrentUser, } from '../../Services/ApiServices';
+import { DeleteArticle, getArticleDetail, getCurrentUser, } from '../../Services/ApiServices';
 import axios from 'axios';
 import { UserContext } from '../../App';
 const ArticlesDetail = () => {
@@ -96,6 +96,11 @@ const ArticlesDetail = () => {
     const handleEditArticle = () => {
         navigate(`/editor/${slug}`, { state: { article } })
     }
+    const handleDeleteArticle = async () => {
+        const res =  await DeleteArticle(token,slug)
+        console.log("delete",res);
+        navigate('/')
+    }
     return (
         <div>
             {
@@ -128,7 +133,7 @@ const ArticlesDetail = () => {
                                             user?.username == article?.author?.username ?
                                                 <>
                                                     <button className="btn btn-outline button-edit" onClick={() => { handleEditArticle() }}><span><AiFillEdit />Edit Article </span></button>
-                                                    <button className="btn btn-outline button-delete"><span><AiFillDelete />Delete Article  </span></button>
+                                                    <button className="btn btn-outline button-delete" onClick={() => { handleDeleteArticle() }}><span><AiFillDelete />Delete Article  </span></button>
                                                 </>
 
                                                 : <>

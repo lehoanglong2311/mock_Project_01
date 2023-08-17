@@ -52,7 +52,7 @@ export const router = createBrowserRouter([
         element: <UserProfile />,
       },
       {
-        path: "/settings/:username",
+        path: "/settings/",
         element: <SettingScreen />,
       },
     ],

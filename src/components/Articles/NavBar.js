@@ -14,7 +14,7 @@ const NavBar = () => {
     console.log("us", user);
     // const token = user.token
     const username = user.username;
-
+    
     return (
         <div style={{ minHeight: '100vh', position: 'relative' }}>
             <Navbar bg="light" data-bs-theme="light">
@@ -22,10 +22,10 @@ const NavBar = () => {
                     <NavLink style={{ fontWeight: 'bold', color: '#5CB85C', fontFamily: 'Titillium Web, sans-serif', fontSize: '1.5rem' }} to="/" >conduit</NavLink>
                     <Nav className="justify-content-end">
                         <NavLink className="nav-link" activeClassName="active" to="/">Home</NavLink>
-                        {token ?
+                        {token  ?
                             <>
                                 <NavLink className="nav-link" activeClassName="active" to="/editor"> <span><GrArticle /> </span> New Article</NavLink>
-                                <NavLink className="nav-link" activeClassName="active" to={`/settings/${username}`}><span><AiFillSetting /> </span>Settings</NavLink>
+                                <NavLink className="nav-link" activeClassName="active" to={`/settings/`}><span><AiFillSetting /> </span>Settings</NavLink>
                                 <NavLink className="nav-link" activeClassName="active" to={`/profiles/${username}`}>
                                     <img src={user.image} className="rounded-circle mx-1" alt="Cinque Terre" width="30" height="30" />
 

@@ -86,7 +86,9 @@ a:hover {
 }
 
 .popular-Tags:hover {
-  background-color: #726f6f
+  background-color: #726f6f;
+  cursor: pointer;
+
 }
 
 .container-popular-tags {

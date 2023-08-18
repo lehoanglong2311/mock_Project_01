@@ -9,6 +9,8 @@ import Navbar from 'react-bootstrap/Navbar';
 import { getArticleDetail, getCurrentUser, } from '../../Services/ApiServices';
 import axios from 'axios';
 import { UserContext } from '../../App';
+import { BsFillTrash3Fill } from 'react-icons/bs'
+
 const ArticlesDetail = () => {
     const [article, setArticle] = useState({})
     // const [curentUser, setCurentUser] = useState({})
@@ -211,6 +213,9 @@ const ArticlesDetail = () => {
                                                                     {comment?.author?.username}
                                                                 </NavLink>
                                                                 <div style={{ fontSize: "13px", marginLeft: 10, color: 'grey' }}>{moment(comment?.createdAt).format('MMMM D, YYYY')}</div>
+                                                               {
+                                                                <button  className='btn btn-danger mx-3'><BsFillTrash3Fill></BsFillTrash3Fill></button>
+                                                               } 
                                                             </Nav>
                                                         </div>
                                                     </div>

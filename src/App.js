@@ -10,6 +10,7 @@ import { useState, createContext, useEffect } from "react";
 import ArticlesDetail from "./components/Articles/ArticlesDetail";
 import NewArticle from "./components/Articles/NewArticle";
 import axios from "axios";
+import EditArticle from "./components/Articles/EditArticle";
 
 
 export const UserContext = createContext({
@@ -35,6 +36,10 @@ export const router = createBrowserRouter([
         element: <ArticlesDetail />,
       },
       {
+        path: "/editor/:slug",
+        element: <EditArticle />,
+      },
+      {
         path: "/login",
         element: <SignIn />,
       },
@@ -47,7 +52,7 @@ export const router = createBrowserRouter([
         element: <UserProfile />,
       },
       {
-        path: "/settings/:username",
+        path: "/settings/",
         element: <SettingScreen />,
       },
     ],

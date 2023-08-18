@@ -11,3 +11,8 @@
 .user-bio {
     color: #aaa;
 }
+.ActiveMyArticles{
+    color: #5CB85C;
+    text-decoration: none;
+    border-bottom: 1px solid #59af59
+}

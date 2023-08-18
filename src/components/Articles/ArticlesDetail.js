@@ -1,4 +1,4 @@
-import { useNavigate, Outlet, NavLink, useParams,redirect  } from 'react-router-dom';
+import { useNavigate, Outlet, NavLink, useParams, redirect } from 'react-router-dom';
 import React, { useEffect, useState, useContext } from 'react';
 import moment from 'moment';
 import { MdOutlineFavorite } from 'react-icons/md'
@@ -6,7 +6,7 @@ import { AiOutlinePlus, AiFillDelete, AiFillEdit, AiOutlineLoading3Quarters } fr
 import './ArticlesDetail.css'
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import { getArticleDetail, getCurrentUser, } from '../../Services/ApiServices';
+import { DeleteArticle, getArticleDetail, getCurrentUser, } from '../../Services/ApiServices';
 import axios from 'axios';
 import { UserContext } from '../../App';
 import { BsFillTrash3Fill } from 'react-icons/bs'
@@ -19,6 +19,7 @@ const ArticlesDetail = () => {
     const { user, token } = useContext(UserContext);
     const [isLoading, setIsLoading] = useState(true);
     const [newComment, setNewComment] = useState("")
+    const navigate = useNavigate();
 
     console.log("uer", user);
     useEffect(() => {
@@ -27,7 +28,6 @@ const ArticlesDetail = () => {
         fetchArticleDetail()
         fetchComments()
     }, [])
-    console.log("comments1", comments);
 
     const fetchArticleDetail = async () => {
         try {
@@ -60,7 +60,7 @@ const ArticlesDetail = () => {
 
             const res = await axios.get(`https://api.realworld.io/api//articles/${slug}/comments`, {
                 headers: {
-                    'Authorization': `Bearer ${token?token: ""}`
+                    'Authorization': `Bearer ${token ? token : ""}`
                 }
             })
             console.log("comments", res);
@@ -95,6 +95,14 @@ const ArticlesDetail = () => {
             console.log(error);
         }
     }
+    const handleEditArticle = () => {
+        navigate(`/editor/${slug}`, { state: { article } })
+    }
+    const handleDeleteArticle = async () => {
+        const res =  await DeleteArticle(token,slug)
+        console.log("delete",res);
+        navigate('/')
+    }
     return (
         <div>
             {
@@ -126,8 +134,8 @@ const ArticlesDetail = () => {
 
                                             user?.username == article?.author?.username ?
                                                 <>
-                                                    <button className="btn btn-outline button-edit"><span><AiFillEdit />Edit Article </span></button>
-                                                    <button className="btn btn-outline button-delete"><span><AiFillDelete />Delete Article  </span></button>
+                                                    <button className="btn btn-outline button-edit" onClick={() => { handleEditArticle() }}><span><AiFillEdit />Edit Article </span></button>
+                                                    <button className="btn btn-outline button-delete" onClick={() => { handleDeleteArticle() }}><span><AiFillDelete />Delete Article  </span></button>
                                                 </>
 
                                                 : <>
@@ -149,6 +157,17 @@ const ArticlesDetail = () => {
                             <div className="body-Article-detail container my-5">
                                 <div className="body-text-detail">
                                     <p>  {article.body}</p>
+                                    {article.tagList.map((tag) => {
+                                        return (
+                                            <>
+
+                                                <li className="tag-list-li ">{tag}</li>
+                                            </>
+                                        )
+
+                                    })
+
+                                    }
                                 </div>
                                 <hr />
                             </div>
@@ -204,6 +223,7 @@ const ArticlesDetail = () => {
                                         {comments.map((comment) => (
                                             <div key={comment.id} className="comment-card  col-7 ">
                                                 <div className="card-body ">
+                                                    {/* <textarea className="comment-area" rows="5" value={`${comment.body}`} readOnly></textarea> */}
                                                     <p className='card-text'>{`${comment.body}`}</p>
                                                     <div className="header-articles-content d-flex">
                                                         <img src={comment?.author?.image} className="rounded-circle" alt="Cinque Terre" width="20" height="20" />

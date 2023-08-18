@@ -7,6 +7,30 @@ const getArticlesGlobal = (currentPage,token) => {
     });
 
 }
+const getMyArticles = (currentPage,token,author) => {
+    return axios.get(`https://api.realworld.io/api//articles?author=${author}&limit=10&offset=${(currentPage - 1) * 10}`,{
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
+
+}
+const getPopularTagRender = (currentPage,token,tag) => {
+    return axios.get(`https://api.realworld.io/api//articles?tag=${tag}&limit=10&offset=${(currentPage - 1) * 10}`,{
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
+
+}
+const getFavoritesArticles = (currentPage,token,author) => {
+    return axios.get(`https://api.realworld.io/api//articles?favorited=${author}&limit=10&offset=${(currentPage - 1) * 10}`,{
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
+
+}
 
 
 
@@ -21,6 +45,22 @@ const getArticleDetail = (slugs) => {
 }
 const postNewArticle = (token, data) => {
     return axios.post(`https://api.realworld.io/api//articles/`, data, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
+
+}
+const EditPutArticle = (token, data,slug) => {
+    return axios.put(`https://api.realworld.io/api//articles/${slug}`, data, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
+
+}
+const DeleteArticle = (token,slug) => {
+    return axios.delete(`https://api.realworld.io/api//articles/${slug}`, {
         headers: {
             'Authorization': `Bearer ${token}`
         }
@@ -43,4 +83,4 @@ const getCurrentUser = (token) => {
     });
 
 }
-export {getCurrentUser, postNewArticle, getArticleFollow, getArticleDetail, getArticlesGlobal, getPopularTags }
+export {getPopularTagRender,getFavoritesArticles,getMyArticles,DeleteArticle,EditPutArticle,getCurrentUser, postNewArticle, getArticleFollow, getArticleDetail, getArticlesGlobal, getPopularTags }

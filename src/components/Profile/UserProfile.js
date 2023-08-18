@@ -169,7 +169,7 @@ const UserProfile = () => {
     };
 
     const handleEditProfile = () => {
-        navigate(`/settings/${username}`);
+        navigate(`/settings`);
     };
 
     return (

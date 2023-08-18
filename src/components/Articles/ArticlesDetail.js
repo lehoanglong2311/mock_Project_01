@@ -97,8 +97,8 @@ const ArticlesDetail = () => {
         navigate(`/editor/${slug}`, { state: { article } })
     }
     const handleDeleteArticle = async () => {
-        const res =  await DeleteArticle(token,slug)
-        console.log("delete",res);
+        const res = await DeleteArticle(token, slug)
+        console.log("delete", res);
         navigate('/')
     }
     return (
@@ -137,7 +137,6 @@ const ArticlesDetail = () => {
                                                 </>
 
                                                 : <>
-                                                    <button className="btn btn-outline button-Follow"><span><AiOutlinePlus />Follow Article {article.favoritesCount} </span></button>
 
                                                     <button className="btn btn-outline button-tym"><span><MdOutlineFavorite />Favorites Article {article.favoritesCount} </span></button>
                                                 </>
@@ -183,9 +182,21 @@ const ArticlesDetail = () => {
                                         <span className='text-secondary' > {moment(article?.createdAt).format('MMMM D, YYYY')}</span>
                                     </div>
                                     <div className="col-4 ">
-                                        <button className="btn btn-outline button-Follow"><span><AiOutlinePlus />Follow Article {article.favoritesCount} </span></button>
 
-                                        <button className="btn btn-outline button-tym"><span><MdOutlineFavorite />Favorites Article {article.favoritesCount} </span></button>
+                                        {
+
+                                            user?.username == article?.author?.username ?
+                                                <>
+                                                    <button className="btn btn-outline button-edit" onClick={() => { handleEditArticle() }}><span><AiFillEdit />Edit Article </span></button>
+                                                    <button className="btn btn-outline button-delete" onClick={() => { handleDeleteArticle() }}><span><AiFillDelete />Delete Article  </span></button>
+                                                </>
+
+                                                : <>
+
+                                                    <button className="btn btn-outline button-tym"><span><MdOutlineFavorite />Favorites Article {article.favoritesCount} </span></button>
+                                                </>
+
+                                        }
                                     </div>
 
 

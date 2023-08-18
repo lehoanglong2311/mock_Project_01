@@ -103,6 +103,24 @@ const ArticlesDetail = () => {
         console.log("delete",res);
         navigate('/')
     }
+
+    const handleDeleteComment = async (idCmt) => {
+        try {
+            console.log("idCmt",idCmt);
+            const res = await axios.delete(`https://api.realworld.io/api//articles/${slug}/comments/${idCmt}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            console.log("delete", res);
+            if (res.status === 200) {
+                //cập nhật lại mảng cmt khi duyệt tất cả các cmt có id != idCmt bị xóa
+                setComments(comments.filter(comment => comment.id !== idCmt));
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
     return (
         <div>
             {
@@ -234,8 +252,9 @@ const ArticlesDetail = () => {
                                                                 </NavLink>
                                                                 <div style={{ fontSize: "13px", marginLeft: 10, color: 'grey' }}>{moment(comment?.createdAt).format('MMMM D, YYYY')}</div>
                                                                {
-                                                                <button  className='btn btn-danger mx-3'><BsFillTrash3Fill></BsFillTrash3Fill></button>
-                                                               } 
+                                                                   user?.username == comment?.author?.username ?
+                                                                <button onClick={()=>{handleDeleteComment(comment.id)}}  className='btn btn-danger mx-3'><BsFillTrash3Fill></BsFillTrash3Fill></button>
+                                                            : ""   } 
                                                             </Nav>
                                                         </div>
                                                     </div>

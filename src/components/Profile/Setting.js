@@ -7,7 +7,7 @@ import { UserContext } from "../../App";
 import { useNavigate } from "react-router-dom";
 
 const Setting = () => {
-  const { logout } = useContext(UserContext);
+  const { logout, updateUser, token } = useContext(UserContext);
   const [userData, setUserData] = useState({
     image: "",
     username: "",
@@ -31,7 +31,7 @@ const Setting = () => {
     };
 
     fetchUserData();
-  }, []);
+  }, [token]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -45,7 +45,7 @@ const Setting = () => {
     e.preventDefault();
 
     try {
-      await axios.put(
+      const response = await axios.put(
         "https://api.realworld.io/api/user",
         { user: userData },
         {
@@ -54,7 +54,11 @@ const Setting = () => {
           },
         }
       );
+      const newToken = response.data.user.token; 
+      updateUser({ ...userData, token: newToken });
+      localStorage.setItem("userToken", newToken);
       alert("Settings updated successfully!");
+      nav(`/profiles/${userData.username}`);
     } catch (error) {
       console.error("Error updating settings:", error);
       alert("Failed to update settings. Please try again later.");

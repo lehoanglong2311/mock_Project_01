@@ -59,7 +59,7 @@ const EditArticle = () => {
     };
     return (
         <div>
-            EditArticle
+       
             <>
                 <div class="row">
                     <div class="col-md-10 offset-md-1 col-xs-12">

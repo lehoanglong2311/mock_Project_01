@@ -26,10 +26,12 @@ const NavBar = () => {
                             <>
                                 <NavLink className="nav-link" activeClassName="active" to="/editor"> <span><GrArticle /> </span> New Article</NavLink>
                                 <NavLink className="nav-link" activeClassName="active" to={`/settings/`}><span><AiFillSetting /> </span>Settings</NavLink>
-                                <NavLink className="nav-link" activeClassName="active" to={`/profiles/${username}`}>
-                                    <img src={user.image} className="rounded-circle mx-1" alt="Cinque Terre" width="30" height="30" />
-
-                                    {user.username}</NavLink>
+                                {user && (
+                                <NavLink className="nav-link" activeClassName="active" to={`/profiles/${user.username}`}>
+                                  <img src={user.image} className="rounded-circle mx-1" alt="Profile" width="30" height="30" />
+                                  {user.username}
+                                </NavLink>
+                                )}
                             </>
                             :
                             <>

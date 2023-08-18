@@ -17,6 +17,7 @@ export const UserContext = createContext({
   user: {},
   setUser: () => {},
   logout: () => {},
+  updateUser: () => {},
 });
 export const router = createBrowserRouter([
   {
@@ -61,9 +62,13 @@ export const router = createBrowserRouter([
 
 function App() {
   const [user, setUser] = useState({});
+  
   const logout = () => {
     setUser({});
     localStorage.removeItem('userToken');
+  };
+  const updateUser = (newUserData) => {
+    setUser(newUserData);
   };
 
   const token = localStorage.getItem('userToken');
@@ -82,7 +87,7 @@ function App() {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, setUser, logout ,token}}>
+    <UserContext.Provider value={{ user, setUser, logout ,updateUser,token}}>
       <RouterProvider router={router} />
     </UserContext.Provider>
   );

@@ -13,6 +13,7 @@ import { Row, Col } from 'react-bootstrap';
 import moment from 'moment';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 import ReactPaginate from 'react-paginate';
+import { GET1ARTICLE, HANDLEFAVERITE} from '../Favorites/Constant';
 
 import { MdOutlineFavorite } from 'react-icons/md'
 import { getFavoritesArticles, getMyArticles } from '../../Services/ApiServices';
@@ -41,15 +42,17 @@ const UserProfile = () => {
         setCurrentPage(selected + 1)
     }
     const handleChangeMyArticles = () => {
+
          setIsFavorite(true)
         setTab("My articles")
         setCurrentPage(1)
     }
     const handleChangeFavoritedArticles = () => {
-         setIsFavorite(false)
+        setIsFavorite(false)
         setTab("Favorited Articles")
         setCurrentPage(1)
-
+        fetchMyFavorites();
+        
 
     }
     ////////////////////
@@ -65,7 +68,7 @@ const UserProfile = () => {
         if (tab === "Favorited Articles") {
             fetchFavoritesArticles()
         }
-    }, [currentPage, tab])
+    }, [currentPage, tab, ])
     // useEffect(() => {
     //     fetchMyArticles()
 
@@ -171,7 +174,61 @@ const UserProfile = () => {
     const handleEditProfile = () => {
         navigate(`/settings`);
     };
+    const [Favorite, setFavorite] = useState([]);
 
+    const fetchAnArticle = async (slug) => {
+        try {
+            const api_an_article = await GET1ARTICLE(slug);
+
+            if (api_an_article.status === 200) {
+                // LOG_SUCCESS_API('get an article', `Slug: ${slug}`)
+                return api_an_article.data.article
+            }
+
+        } catch (error) {
+            // LOG_ERROR_API('fetchAnArticle', error);
+            return null
+        }
+    }
+    const fetchMyFavorites = async () => {
+        try {
+            const token = localStorage.getItem('userToken');
+            const headers = {
+                'Authorization': `Bearer ${token}`
+            };
+            const response = await axios.get('https://api.realworld.io/api/articles', {
+                headers
+            }); 
+            const favorited = response.data.articles.filter(article => article.favorited);
+            setFavorite(favorited);
+            console.log("favoritesssssssssssssssssssss");
+
+        } catch (error) {
+            console.log("Error when load articles", error);
+        }
+    };
+    const handleFavorites = async (slug) => {
+        try {
+        
+            
+            const res_fetchAnArticle = await fetchAnArticle(slug);
+
+            if (res_fetchAnArticle) {
+                
+
+                const res = await HANDLEFAVERITE(res_fetchAnArticle.favorited ? 'DELETE' : 'POST', slug)
+
+                if (res) {
+                    fetchMyFavorites();
+                    // LOG_SUCCESS_API('handleFavorites', `Slug: ${slug}`)
+                }
+            }
+
+        } catch (error) {
+            // LOG_ERROR_API('handleFavorites', error);
+        }
+    }
+  console.log("Favorite",Favorite);
     return (
         <>
             {userData && (
@@ -237,7 +294,7 @@ const UserProfile = () => {
                             :
                             (
 
-                                articlesFilter.map((article, index) => {
+                               Favorite.map((article, index) => {
                                     return (
                                         <div className="articles-content">
                                             <div className="header-articles-content d-flex">
@@ -253,7 +310,9 @@ const UserProfile = () => {
                                                     <span className='text-secondary' > {moment(article?.createdAt).format('MMMM D, YYYY')}</span>
                                                 </div>
                                                 <div className="col-2 button-tym-container">
-                                                    <button className="btn btn-outline button-tym"><span><MdOutlineFavorite /> {article.favoritesCount} </span></button>
+                                                    <button
+                                                     onClick={() => handleFavorites(article.slug)}
+                                                     className={`btn btn-outline-${article.favorited ? 'success' : 'primary'} `}><span><MdOutlineFavorite /> {article.favoritesCount} </span></button>
 
                                                 </div>
 
@@ -291,6 +350,7 @@ const UserProfile = () => {
                                     )
 
                                 })
+
                             )
 
 

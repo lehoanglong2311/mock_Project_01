@@ -106,7 +106,7 @@ const ArticlesDetail = () => {
 
     const handleDeleteComment = async (idCmt) => {
         try {
-            console.log("idCmt",idCmt);
+            console.log("idCmt", idCmt);
             const res = await axios.delete(`https://api.realworld.io/api//articles/${slug}/comments/${idCmt}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -256,7 +256,7 @@ const ArticlesDetail = () => {
                                                     <p className='card-text'>{`${comment.body}`}</p>
                                                     <div className="header-articles-content d-flex">
                                                         <img src={comment?.author?.image} className="rounded-circle" alt="Cinque Terre" width="20" height="20" />
-                                                        <div className="info">
+                                                        <div className="info ">
                                                             <Nav className="me-auto">
                                                                 <NavLink className="" to={`/profiles/${comment?.author?.username}`} style={{ fontSize: "13px", color: '#5CB85C' }}>
                                                                     {comment?.author?.username}
@@ -264,11 +264,13 @@ const ArticlesDetail = () => {
                                                                 <div style={{ fontSize: "13px", marginLeft: 10, color: 'grey' }}>{moment(comment?.createdAt).format('MMMM D, YYYY')}</div>
                                                                {
                                                                    user?.username == comment?.author?.username ?
-                                                                <button onClick={()=>{handleDeleteComment(comment.id)}}  className='btn btn-danger mx-3'><BsFillTrash3Fill></BsFillTrash3Fill></button>
+                                                                <button onClick={()=>{handleDeleteComment(comment.id)}}  className='btn' style={{marginLeft: 990}}><BsFillTrash3Fill></BsFillTrash3Fill></button>
                                                             : ""   } 
                                                             </Nav>
+                                                            
                                                         </div>
                                                     </div>
+                                                    
                                                 </div>
                                             </div>
                                         ))}

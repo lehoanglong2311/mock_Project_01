@@ -144,7 +144,7 @@ const UserProfile = () => {
             console.error('Error checking following status:', error);
         }
     };
-  
+   
 
     const handleFollowProfile = async () => {
         if (!user.token) {

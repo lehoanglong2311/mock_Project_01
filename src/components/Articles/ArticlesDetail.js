@@ -10,6 +10,7 @@ import { DeleteArticle, getArticleDetail, getCurrentUser, } from '../../Services
 import axios from 'axios';
 import { UserContext } from '../../App';
 import { BsFillTrash3Fill } from 'react-icons/bs'
+import { GET1ARTICLE, HANDLEFAVERITE } from '../Favorites/Constant';
 
 const ArticlesDetail = () => {
     const [article, setArticle] = useState({})
@@ -121,6 +122,7 @@ const ArticlesDetail = () => {
             console.log(error);
         }
     }
+
     const handleTrueFalseFavorites = async (slug,favorited) => {
         // alert(favorited)
         if (!user.token) {
@@ -163,6 +165,7 @@ const ArticlesDetail = () => {
             console.error('Error favorites user:', error);
         }
     }
+
     return (
         <div>
             {
@@ -204,6 +207,8 @@ const ArticlesDetail = () => {
                                                         :
                                                         <button onClick={() => handleTrueFalseFavorites(article.slug,article.favorited)} className="btn btn-outline button-tym"><span><MdOutlineFavorite />Favorites Article {article.favoritesCount} </span></button>
                                                         }
+
+
 
                                                 </>
 
@@ -258,7 +263,13 @@ const ArticlesDetail = () => {
                                                 </>
 
                                                 : <>
+                                            {article.favorited ?
+                                                        <button onClick={() => handleTrueFalseFavorites(article.slug,article.favorited)} className="btn btn-success"><span><MdOutlineFavorite />Favorites Article {article.favoritesCount} </span></button>
+                                                        :
                                                         <button onClick={() => handleTrueFalseFavorites(article.slug,article.favorited)} className="btn btn-outline button-tym"><span><MdOutlineFavorite />Favorites Article {article.favoritesCount} </span></button>
+                                                        }
+
+
 
                                                 </>
 
@@ -302,21 +313,19 @@ const ArticlesDetail = () => {
                                                     <p className='card-text'>{`${comment.body}`}</p>
                                                     <div className="header-articles-content d-flex">
                                                         <img src={comment?.author?.image} className="rounded-circle" alt="Cinque Terre" width="20" height="20" />
-                                                        <div className="info ">
+                                                        <div className="info">
                                                             <Nav className="me-auto">
                                                                 <NavLink className="" to={`/profiles/${comment?.author?.username}`} style={{ fontSize: "13px", color: '#5CB85C' }}>
                                                                     {comment?.author?.username}
                                                                 </NavLink>
                                                                 <div style={{ fontSize: "13px", marginLeft: 10, color: 'grey' }}>{moment(comment?.createdAt).format('MMMM D, YYYY')}</div>
-                                                               {
-                                                                   user?.username == comment?.author?.username ?
-                                                                <button onClick={()=>{handleDeleteComment(comment.id)}}  className='btn' style={{marginLeft: 990}}><BsFillTrash3Fill></BsFillTrash3Fill></button>
-                                                            : ""   } 
+                                                                {
+                                                                    user?.username == comment?.author?.username ?
+                                                                        <button onClick={() => { handleDeleteComment(comment.id) }} className='btn btn-danger mx-3'><BsFillTrash3Fill></BsFillTrash3Fill></button>
+                                                                        : ""}
                                                             </Nav>
-                                                            
                                                         </div>
                                                     </div>
-                                                    
                                                 </div>
                                             </div>
                                         ))}

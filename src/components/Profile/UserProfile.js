@@ -13,6 +13,7 @@ import { Row, Col } from 'react-bootstrap';
 import moment from 'moment';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 import ReactPaginate from 'react-paginate';
+import { GET1ARTICLE, HANDLEFAVERITE} from '../Favorites/Constant';
 
 import { MdOutlineFavorite } from 'react-icons/md'
 import { DeleteLike, Like, getFavoritesArticles, getMyArticles } from '../../Services/ApiServices';
@@ -41,7 +42,9 @@ const UserProfile = () => {
         setCurrentPage(selected + 1)
     }
     const handleChangeMyArticles = () => {
+
         setIsFavorite(true)
+
         setTab("My articles")
         setCurrentPage(1)
     }
@@ -49,7 +52,8 @@ const UserProfile = () => {
         setIsFavorite(false)
         setTab("Favorited Articles")
         setCurrentPage(1)
-
+        fetchMyFavorites();
+        
 
     }
     ////////////////////
@@ -65,7 +69,9 @@ const UserProfile = () => {
         if (tab === "Favorited Articles") {
             fetchFavoritesArticles()
         }
+
     }, [currentPage, tab,])
+
     // useEffect(() => {
     //     fetchMyArticles()
 
@@ -172,6 +178,7 @@ const UserProfile = () => {
     const handleEditProfile = () => {
         navigate(`/settings`);
     };
+
     const handleTrueFalseFavorites = async (slug,favorited) => {
         // alert(favorited)
         if (!user.token) {
@@ -220,6 +227,23 @@ const UserProfile = () => {
     }
 
 
+
+            if (res_fetchAnArticle) {
+                
+
+                const res = await HANDLEFAVERITE(res_fetchAnArticle.favorited ? 'DELETE' : 'POST', slug)
+
+                if (res) {
+                    fetchMyFavorites();
+                    // LOG_SUCCESS_API('handleFavorites', `Slug: ${slug}`)
+                }
+            }
+
+        } catch (error) {
+            // LOG_ERROR_API('handleFavorites', error);
+        }
+    }
+  console.log("Favorite",Favorite);
     return (
         <>
             {userData && (
@@ -285,7 +309,7 @@ const UserProfile = () => {
                             :
                             (
 
-                                articlesFilter.map((article, index) => {
+                               Favorite.map((article, index) => {
                                     return (
                                         <div className="articles-content">
                                             <div className="header-articles-content d-flex">
@@ -301,11 +325,13 @@ const UserProfile = () => {
                                                     <span className='text-secondary' > {moment(article?.createdAt).format('MMMM D, YYYY')}</span>
                                                 </div>
                                                 <div className="col-2 button-tym-container">
+
                                                 {article.favorited ?
                                                         <button onClick={() => handleTrueFalseFavorites(article.slug,article.favorited)} className="btn btn-success"><span><MdOutlineFavorite />Favorites Article {article.favoritesCount} </span></button>
                                                         :
                                                         <button onClick={() => handleTrueFalseFavorites(article.slug,article.favorited)} className="btn btn-outline button-tym"><span><MdOutlineFavorite />Favorites Article {article.favoritesCount} </span></button>
                                                         }
+
 
                                                 </div>
 
@@ -343,6 +369,7 @@ const UserProfile = () => {
                                     )
 
                                 })
+
                             )
 
 

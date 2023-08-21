@@ -198,42 +198,7 @@ const Home = () => {
 
     //==============
     
-    const fetchAnArticle = async (slug) => {
-        try {
-            const api_an_article = await GET1ARTICLE(slug);
-
-            if (api_an_article.status === 200) {
-                // LOG_SUCCESS_API('get an article', `Slug: ${slug}`)
-                return api_an_article.data.article
-            }
-
-        } catch (error) {
-            // LOG_ERROR_API('fetchAnArticle', error);
-            return null
-        }
-    }
-    const handleFavorites = async (slug) => {
-        try {
-        
-            
-            const res_fetchAnArticle = await fetchAnArticle(slug);
-
-            if (res_fetchAnArticle) {
-                
-
-                const res = await HANDLEFAVERITE(res_fetchAnArticle.favorited ? 'DELETE' : 'POST', slug)
-
-                if (res) {
-                    fetchArticlesGlobal();
-                    // LOG_SUCCESS_API('handleFavorites', `Slug: ${slug}`)
-                }
-            }
-
-        } catch (error) {
-            // LOG_ERROR_API('handleFavorites', error);
-        }
-    }
-    console.log(articles);
+ 
    
     return (
 
@@ -290,9 +255,9 @@ const Home = () => {
                                                         <div className="col-2 button-tym-container">
 
                                                         {article.favorited ?
-                                                        <button onClick={() => handleTrueFalseFavorites(article.slug,article.favorited)} className="btn btn-success"><span><MdOutlineFavorite />Favorites Article {article.favoritesCount} </span></button>
+                                                        <button onClick={() => handleTrueFalseFavorites(article.slug,article.favorited)} className="btn btn-success"><span><MdOutlineFavorite /> {article.favoritesCount} </span></button>
                                                         :
-                                                        <button onClick={() => handleTrueFalseFavorites(article.slug,article.favorited)} className="btn btn-outline button-tym"><span><MdOutlineFavorite />Favorites Article {article.favoritesCount} </span></button>
+                                                        <button onClick={() => handleTrueFalseFavorites(article.slug,article.favorited)} className="btn btn-outline button-tym"><span><MdOutlineFavorite /> {article.favoritesCount} </span></button>
                                                         }
 
 

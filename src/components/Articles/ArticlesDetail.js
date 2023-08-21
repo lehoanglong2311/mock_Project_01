@@ -10,7 +10,6 @@ import { DeleteArticle, getArticleDetail, getCurrentUser, } from '../../Services
 import axios from 'axios';
 import { UserContext } from '../../App';
 import { BsFillTrash3Fill } from 'react-icons/bs'
-import { GET1ARTICLE, HANDLEFAVERITE } from '../Favorites/Constant';
 
 const ArticlesDetail = () => {
     const [article, setArticle] = useState({})
@@ -123,7 +122,7 @@ const ArticlesDetail = () => {
         }
     }
 
-    const handleTrueFalseFavorites = async (slug,favorited) => {
+    const handleTrueFalseFavorites = async (slug, favorited) => {
         // alert(favorited)
         if (!user.token) {
             navigate('/login');
@@ -139,23 +138,23 @@ const ArticlesDetail = () => {
                 });;
                 console.log("unlike", res);
             } else {
-                const res =await axios.post(`https://api.realworld.io/api/articles/${slug}/favorite`,null, {
+                const res = await axios.post(`https://api.realworld.io/api/articles/${slug}/favorite`, null, {
                     headers: {
                         'Authorization': `Bearer ${token ? token : ""}`
                     }
                 });
-            
+
                 console.log("like", res);
             }
-           // Toggle the follow status
-         
-           const updatedArticle = {
-            ...article,
-            favorited: !favorited,
-            favoritesCount: favorited ? article.favoritesCount - 1 : article.favoritesCount + 1
-        };
+            // Toggle the follow status
 
-        setArticle(updatedArticle);
+            const updatedArticle = {
+                ...article,
+                favorited: !favorited,
+                favoritesCount: favorited ? article.favoritesCount - 1 : article.favoritesCount + 1
+            };
+
+            setArticle(updatedArticle);
             // if (favorited) {
             //     alert('Bài viết bỏ thích');
             // } else {
@@ -202,11 +201,11 @@ const ArticlesDetail = () => {
                                                 </>
 
                                                 : <>
-                                                {article.favorited ?
-                                                        <button onClick={() => handleTrueFalseFavorites(article.slug,article.favorited)} className="btn btn-success"><span><MdOutlineFavorite />Favorites Article {article.favoritesCount} </span></button>
+                                                    {article.favorited ?
+                                                        <button onClick={() => handleTrueFalseFavorites(article.slug, article.favorited)} className="btn btn-success"><span><MdOutlineFavorite />Favorites Article {article.favoritesCount} </span></button>
                                                         :
-                                                        <button onClick={() => handleTrueFalseFavorites(article.slug,article.favorited)} className="btn btn-outline button-tym"><span><MdOutlineFavorite />Favorites Article {article.favoritesCount} </span></button>
-                                                        }
+                                                        <button onClick={() => handleTrueFalseFavorites(article.slug, article.favorited)} className="btn btn-outline button-tym"><span><MdOutlineFavorite />Favorites Article {article.favoritesCount} </span></button>
+                                                    }
 
 
 
@@ -263,11 +262,11 @@ const ArticlesDetail = () => {
                                                 </>
 
                                                 : <>
-                                            {article.favorited ?
-                                                        <button onClick={() => handleTrueFalseFavorites(article.slug,article.favorited)} className="btn btn-success"><span><MdOutlineFavorite />Favorites Article {article.favoritesCount} </span></button>
+                                                    {article.favorited ?
+                                                        <button onClick={() => handleTrueFalseFavorites(article.slug, article.favorited)} className="btn btn-success"><span><MdOutlineFavorite />Favorites Article {article.favoritesCount} </span></button>
                                                         :
-                                                        <button onClick={() => handleTrueFalseFavorites(article.slug,article.favorited)} className="btn btn-outline button-tym"><span><MdOutlineFavorite />Favorites Article {article.favoritesCount} </span></button>
-                                                        }
+                                                        <button onClick={() => handleTrueFalseFavorites(article.slug, article.favorited)} className="btn btn-outline button-tym"><span><MdOutlineFavorite />Favorites Article {article.favoritesCount} </span></button>
+                                                    }
 
 
 
@@ -291,7 +290,7 @@ const ArticlesDetail = () => {
                                                         <textarea value={newComment} onChange={(e) => { setNewComment(e.target.value) }} placeholder='Write a comment...' className="comment-area1" rows="5" ></textarea>
                                                         <div className="header-articles-content d-flex">
                                                             <img src={"https://qpet.vn/wp-content/uploads/2023/04/anh-meme-cho-meo-hai-huoc-24.jpg"} className="rounded-circle" alt="Cinque Terre" width="20" height="20" />
-                                                            <button onClick={() => { PostComments() }} type='button' className="btn btn-success btn-sm" style={{ marginLeft: 940 }}>Post Comment</button>
+                                                            <button onClick={() => { PostComments() }} type='button' className="btn btn-success btn-sm" style={{ marginLeft: 720 }}>Post Comment</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -321,7 +320,7 @@ const ArticlesDetail = () => {
                                                                 <div style={{ fontSize: "13px", marginLeft: 10, color: 'grey' }}>{moment(comment?.createdAt).format('MMMM D, YYYY')}</div>
                                                                 {
                                                                     user?.username == comment?.author?.username ?
-                                                                        <button onClick={() => { handleDeleteComment(comment.id) }} className='btn btn-danger mx-3'><BsFillTrash3Fill></BsFillTrash3Fill></button>
+                                                                        <button onClick={() => { handleDeleteComment(comment.id) } } style={{ marginLeft: 800 }} className='btn btn-sm'><BsFillTrash3Fill></BsFillTrash3Fill></button>
                                                                         : ""}
                                                             </Nav>
                                                         </div>

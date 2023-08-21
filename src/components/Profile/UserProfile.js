@@ -13,7 +13,7 @@ import { Row, Col } from 'react-bootstrap';
 import moment from 'moment';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 import ReactPaginate from 'react-paginate';
-import { GET1ARTICLE, HANDLEFAVERITE} from '../Favorites/Constant';
+
 
 import { MdOutlineFavorite } from 'react-icons/md'
 import { DeleteLike, Like, getFavoritesArticles, getMyArticles } from '../../Services/ApiServices';
@@ -52,7 +52,6 @@ const UserProfile = () => {
         setIsFavorite(false)
         setTab("Favorited Articles")
         setCurrentPage(1)
-        fetchMyFavorites();
         
 
     }
@@ -228,22 +227,7 @@ const UserProfile = () => {
 
 
 
-            if (res_fetchAnArticle) {
-                
-
-                const res = await HANDLEFAVERITE(res_fetchAnArticle.favorited ? 'DELETE' : 'POST', slug)
-
-                if (res) {
-                    fetchMyFavorites();
-                    // LOG_SUCCESS_API('handleFavorites', `Slug: ${slug}`)
-                }
-            }
-
-        } catch (error) {
-            // LOG_ERROR_API('handleFavorites', error);
-        }
-    }
-  console.log("Favorite",Favorite);
+          
     return (
         <>
             {userData && (
@@ -309,7 +293,7 @@ const UserProfile = () => {
                             :
                             (
 
-                               Favorite.map((article, index) => {
+                                articlesFilter.map((article, index) => {
                                     return (
                                         <div className="articles-content">
                                             <div className="header-articles-content d-flex">
@@ -327,9 +311,9 @@ const UserProfile = () => {
                                                 <div className="col-2 button-tym-container">
 
                                                 {article.favorited ?
-                                                        <button onClick={() => handleTrueFalseFavorites(article.slug,article.favorited)} className="btn btn-success"><span><MdOutlineFavorite />Favorites Article {article.favoritesCount} </span></button>
+                                                        <button onClick={() => handleTrueFalseFavorites(article.slug,article.favorited)} className="btn btn-success"><span><MdOutlineFavorite />{article.favoritesCount} </span></button>
                                                         :
-                                                        <button onClick={() => handleTrueFalseFavorites(article.slug,article.favorited)} className="btn btn-outline button-tym"><span><MdOutlineFavorite />Favorites Article {article.favoritesCount} </span></button>
+                                                        <button onClick={() => handleTrueFalseFavorites(article.slug,article.favorited)} className="btn btn-outline button-tym"><span><MdOutlineFavorite /> {article.favoritesCount} </span></button>
                                                         }
 
 

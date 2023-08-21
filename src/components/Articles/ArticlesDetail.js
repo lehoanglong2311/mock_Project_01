@@ -122,44 +122,47 @@ const ArticlesDetail = () => {
             console.log(error);
         }
     }
-    const fetchAnArticle = async (slug) => {
-        try {
-            const api_an_article = await GET1ARTICLE(slug);
 
-            if (api_an_article.status === 200) {
-                console.log(api_an_article.data.article)
-                return api_an_article.data.article
-            }
-
-        } catch (error) {
-            return null
+    const handleTrueFalseFavorites = async (slug,favorited) => {
+        // alert(favorited)
+        if (!user.token) {
+            navigate('/login');
+            return;
         }
-    }
-    const fetch = async (slug) => {
-        const res = await fetchAnArticle(slug)
-        if (res) {
-            setArticle(res)
-            return true
-        }
-        return false
-    }
-    const handleFavorites = async (slug) => {
+        // console.log("Favorite", Favorite);
         try {
-            const res_fetchAnArticle = await fetchAnArticle(slug);
-
-            if (res_fetchAnArticle) {
-                const res = await HANDLEFAVERITE(res_fetchAnArticle.favorited ? 'DELETE' : 'POST', slug)
-
-                if (res) {
-                    const status = await fetch(slug)
-                    if (status) {
-                        fetchArticleDetail();
+            if (favorited) {
+                const res = await axios.delete(`https://api.realworld.io/api/articles/${slug}/favorite`, {
+                    headers: {
+                        'Authorization': `Bearer ${token ? token : ""}`
                     }
-                }
+                });;
+                console.log("unlike", res);
+            } else {
+                const res =await axios.post(`https://api.realworld.io/api/articles/${slug}/favorite`,null, {
+                    headers: {
+                        'Authorization': `Bearer ${token ? token : ""}`
+                    }
+                });
+            
+                console.log("like", res);
             }
+           // Toggle the follow status
+         
+           const updatedArticle = {
+            ...article,
+            favorited: !favorited,
+            favoritesCount: favorited ? article.favoritesCount - 1 : article.favoritesCount + 1
+        };
 
+        setArticle(updatedArticle);
+            // if (favorited) {
+            //     alert('Bài viết bỏ thích');
+            // } else {
+            //     alert('Bài viết đã thích');
+            // }
         } catch (error) {
-            console.log(error);
+            console.error('Error favorites user:', error);
         }
     }
 
@@ -199,10 +202,14 @@ const ArticlesDetail = () => {
                                                 </>
 
                                                 : <>
+                                                {article.favorited ?
+                                                        <button onClick={() => handleTrueFalseFavorites(article.slug,article.favorited)} className="btn btn-success"><span><MdOutlineFavorite />Favorites Article {article.favoritesCount} </span></button>
+                                                        :
+                                                        <button onClick={() => handleTrueFalseFavorites(article.slug,article.favorited)} className="btn btn-outline button-tym"><span><MdOutlineFavorite />Favorites Article {article.favoritesCount} </span></button>
+                                                        }
 
-                                                    <button
-                                                        onClick={() => handleFavorites(article.slug)}
-                                                        className={`btn btn-outline-${article.favorited ? 'success' : 'primary'} `}><span><MdOutlineFavorite />{article.favoritesCount} </span></button>
+
+
                                                 </>
 
                                         }
@@ -256,8 +263,14 @@ const ArticlesDetail = () => {
                                                 </>
 
                                                 : <>
+                                            {article.favorited ?
+                                                        <button onClick={() => handleTrueFalseFavorites(article.slug,article.favorited)} className="btn btn-success"><span><MdOutlineFavorite />Favorites Article {article.favoritesCount} </span></button>
+                                                        :
+                                                        <button onClick={() => handleTrueFalseFavorites(article.slug,article.favorited)} className="btn btn-outline button-tym"><span><MdOutlineFavorite />Favorites Article {article.favoritesCount} </span></button>
+                                                        }
 
-                                                    <button className={`btn btn-outline-${article.favorited ? 'success' : 'primary'} `}><span><MdOutlineFavorite />{article.favoritesCount} </span></button>
+
+
                                                 </>
 
                                         }

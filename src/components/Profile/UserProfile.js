@@ -16,7 +16,7 @@ import ReactPaginate from 'react-paginate';
 import { GET1ARTICLE, HANDLEFAVERITE} from '../Favorites/Constant';
 
 import { MdOutlineFavorite } from 'react-icons/md'
-import { getFavoritesArticles, getMyArticles } from '../../Services/ApiServices';
+import { DeleteLike, Like, getFavoritesArticles, getMyArticles } from '../../Services/ApiServices';
 
 const UserProfile = () => {
     const { username } = useParams();
@@ -43,7 +43,8 @@ const UserProfile = () => {
     }
     const handleChangeMyArticles = () => {
 
-         setIsFavorite(true)
+        setIsFavorite(true)
+
         setTab("My articles")
         setCurrentPage(1)
     }
@@ -68,7 +69,9 @@ const UserProfile = () => {
         if (tab === "Favorited Articles") {
             fetchFavoritesArticles()
         }
-    }, [currentPage, tab, ])
+
+    }, [currentPage, tab,])
+
     // useEffect(() => {
     //     fetchMyArticles()
 
@@ -147,6 +150,7 @@ const UserProfile = () => {
             console.error('Error checking following status:', error);
         }
     };
+   
 
     const handleFollowProfile = async () => {
         if (!user.token) {
@@ -174,44 +178,55 @@ const UserProfile = () => {
     const handleEditProfile = () => {
         navigate(`/settings`);
     };
-    const [Favorite, setFavorite] = useState([]);
 
-    const fetchAnArticle = async (slug) => {
+    const handleTrueFalseFavorites = async (slug,favorited) => {
+        // alert(favorited)
+        if (!user.token) {
+            navigate('/login');
+            return;
+        }
+        // console.log("Favorite", Favorite);
         try {
-            const api_an_article = await GET1ARTICLE(slug);
-
-            if (api_an_article.status === 200) {
-                // LOG_SUCCESS_API('get an article', `Slug: ${slug}`)
-                return api_an_article.data.article
+            if (favorited) {
+                const res = await axios.delete(`https://api.realworld.io/api/articles/${slug}/favorite`, {
+                    headers: {
+                        'Authorization': `Bearer ${token ? token : ""}`
+                    }
+                });;
+                console.log("unlike", res);
+            } else {
+                const res = axios.post(`https://api.realworld.io/api/articles/${slug}/favorite`,null, {
+                    headers: {
+                        'Authorization': `Bearer ${token ? token : ""}`
+                    }
+                });
+            
+                console.log("like", res);
             }
+           // Toggle the follow status
+           const updatedArticles = articlesFilter.map(article => {
+            if (article.slug === slug) {
+                return {
+                    ...article,
+                    favorited: !favorited,
+                    favoritesCount: favorited ? article.favoritesCount - 1 : article.favoritesCount + 1
+                };
+            }
+            return article;
+        });
 
+        setArticlesFilter(updatedArticles);
+            // if (favorited) {
+            //     alert('Bài viết bỏ thích');
+            // } else {
+            //     alert('Bài viết đã thích');
+            // }
         } catch (error) {
-            // LOG_ERROR_API('fetchAnArticle', error);
-            return null
+            console.error('Error favorites user:', error);
         }
     }
-    const fetchMyFavorites = async () => {
-        try {
-            const token = localStorage.getItem('userToken');
-            const headers = {
-                'Authorization': `Bearer ${token}`
-            };
-            const response = await axios.get('https://api.realworld.io/api/articles', {
-                headers
-            }); 
-            const favorited = response.data.articles.filter(article => article.favorited);
-            setFavorite(favorited);
-            console.log("favoritesssssssssssssssssssss");
 
-        } catch (error) {
-            console.log("Error when load articles", error);
-        }
-    };
-    const handleFavorites = async (slug) => {
-        try {
-        
-            
-            const res_fetchAnArticle = await fetchAnArticle(slug);
+
 
             if (res_fetchAnArticle) {
                 
@@ -270,7 +285,7 @@ const UserProfile = () => {
                                     <NavLink className={`Feed ${isFavorite ? "ActiveMyArticles" : ""} `} to={`/profiles/${username}`} onClick={() => handleChangeMyArticles()} >
                                         My Articles
                                     </NavLink>
-                                    <NavLink className={`Feed ${isFavorite ? "" : "ActiveMyArticles"} `}onClick={() => handleChangeFavoritedArticles()}>
+                                    <NavLink className={`Feed ${isFavorite ? "" : "ActiveMyArticles"} `} onClick={() => handleChangeFavoritedArticles()}>
                                         Favorited Articles
                                     </NavLink>
                                 </Nav>
@@ -310,9 +325,13 @@ const UserProfile = () => {
                                                     <span className='text-secondary' > {moment(article?.createdAt).format('MMMM D, YYYY')}</span>
                                                 </div>
                                                 <div className="col-2 button-tym-container">
-                                                    <button
-                                                     onClick={() => handleFavorites(article.slug)}
-                                                     className={`btn btn-outline-${article.favorited ? 'success' : 'primary'} `}><span><MdOutlineFavorite /> {article.favoritesCount} </span></button>
+
+                                                {article.favorited ?
+                                                        <button onClick={() => handleTrueFalseFavorites(article.slug,article.favorited)} className="btn btn-success"><span><MdOutlineFavorite />Favorites Article {article.favoritesCount} </span></button>
+                                                        :
+                                                        <button onClick={() => handleTrueFalseFavorites(article.slug,article.favorited)} className="btn btn-outline button-tym"><span><MdOutlineFavorite />Favorites Article {article.favoritesCount} </span></button>
+                                                        }
+
 
                                                 </div>
 

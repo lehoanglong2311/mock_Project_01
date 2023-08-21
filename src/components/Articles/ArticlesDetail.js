@@ -121,6 +121,48 @@ const ArticlesDetail = () => {
             console.log(error);
         }
     }
+    const handleTrueFalseFavorites = async (slug,favorited) => {
+        // alert(favorited)
+        if (!user.token) {
+            navigate('/login');
+            return;
+        }
+        // console.log("Favorite", Favorite);
+        try {
+            if (favorited) {
+                const res = await axios.delete(`https://api.realworld.io/api/articles/${slug}/favorite`, {
+                    headers: {
+                        'Authorization': `Bearer ${token ? token : ""}`
+                    }
+                });;
+                console.log("unlike", res);
+            } else {
+                const res =await axios.post(`https://api.realworld.io/api/articles/${slug}/favorite`,null, {
+                    headers: {
+                        'Authorization': `Bearer ${token ? token : ""}`
+                    }
+                });
+            
+                console.log("like", res);
+            }
+           // Toggle the follow status
+         
+           const updatedArticle = {
+            ...article,
+            favorited: !favorited,
+            favoritesCount: favorited ? article.favoritesCount - 1 : article.favoritesCount + 1
+        };
+
+        setArticle(updatedArticle);
+            // if (favorited) {
+            //     alert('Bài viết bỏ thích');
+            // } else {
+            //     alert('Bài viết đã thích');
+            // }
+        } catch (error) {
+            console.error('Error favorites user:', error);
+        }
+    }
     return (
         <div>
             {
@@ -157,8 +199,12 @@ const ArticlesDetail = () => {
                                                 </>
 
                                                 : <>
+                                                {article.favorited ?
+                                                        <button onClick={() => handleTrueFalseFavorites(article.slug,article.favorited)} className="btn btn-success"><span><MdOutlineFavorite />Favorites Article {article.favoritesCount} </span></button>
+                                                        :
+                                                        <button onClick={() => handleTrueFalseFavorites(article.slug,article.favorited)} className="btn btn-outline button-tym"><span><MdOutlineFavorite />Favorites Article {article.favoritesCount} </span></button>
+                                                        }
 
-                                                    <button className="btn btn-outline button-tym"><span><MdOutlineFavorite />Favorites Article {article.favoritesCount} </span></button>
                                                 </>
 
                                         }
@@ -212,8 +258,8 @@ const ArticlesDetail = () => {
                                                 </>
 
                                                 : <>
+                                                        <button onClick={() => handleTrueFalseFavorites(article.slug,article.favorited)} className="btn btn-outline button-tym"><span><MdOutlineFavorite />Favorites Article {article.favoritesCount} </span></button>
 
-                                                    <button className="btn btn-outline button-tym"><span><MdOutlineFavorite />Favorites Article {article.favoritesCount} </span></button>
                                                 </>
 
                                         }

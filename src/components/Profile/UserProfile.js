@@ -15,7 +15,7 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 import ReactPaginate from 'react-paginate';
 
 import { MdOutlineFavorite } from 'react-icons/md'
-import { getFavoritesArticles, getMyArticles } from '../../Services/ApiServices';
+import { DeleteLike, Like, getFavoritesArticles, getMyArticles } from '../../Services/ApiServices';
 
 const UserProfile = () => {
     const { username } = useParams();
@@ -41,12 +41,12 @@ const UserProfile = () => {
         setCurrentPage(selected + 1)
     }
     const handleChangeMyArticles = () => {
-         setIsFavorite(true)
+        setIsFavorite(true)
         setTab("My articles")
         setCurrentPage(1)
     }
     const handleChangeFavoritedArticles = () => {
-         setIsFavorite(false)
+        setIsFavorite(false)
         setTab("Favorited Articles")
         setCurrentPage(1)
 
@@ -65,7 +65,7 @@ const UserProfile = () => {
         if (tab === "Favorited Articles") {
             fetchFavoritesArticles()
         }
-    }, [currentPage, tab])
+    }, [currentPage, tab,])
     // useEffect(() => {
     //     fetchMyArticles()
 
@@ -144,6 +144,7 @@ const UserProfile = () => {
             console.error('Error checking following status:', error);
         }
     };
+  
 
     const handleFollowProfile = async () => {
         if (!user.token) {
@@ -171,6 +172,53 @@ const UserProfile = () => {
     const handleEditProfile = () => {
         navigate(`/settings`);
     };
+    const handleTrueFalseFavorites = async (slug,favorited) => {
+        // alert(favorited)
+        if (!user.token) {
+            navigate('/login');
+            return;
+        }
+        // console.log("Favorite", Favorite);
+        try {
+            if (favorited) {
+                const res = await axios.delete(`https://api.realworld.io/api/articles/${slug}/favorite`, {
+                    headers: {
+                        'Authorization': `Bearer ${token ? token : ""}`
+                    }
+                });;
+                console.log("unlike", res);
+            } else {
+                const res = axios.post(`https://api.realworld.io/api/articles/${slug}/favorite`,null, {
+                    headers: {
+                        'Authorization': `Bearer ${token ? token : ""}`
+                    }
+                });
+            
+                console.log("like", res);
+            }
+           // Toggle the follow status
+           const updatedArticles = articlesFilter.map(article => {
+            if (article.slug === slug) {
+                return {
+                    ...article,
+                    favorited: !favorited,
+                    favoritesCount: favorited ? article.favoritesCount - 1 : article.favoritesCount + 1
+                };
+            }
+            return article;
+        });
+
+        setArticlesFilter(updatedArticles);
+            // if (favorited) {
+            //     alert('Bài viết bỏ thích');
+            // } else {
+            //     alert('Bài viết đã thích');
+            // }
+        } catch (error) {
+            console.error('Error favorites user:', error);
+        }
+    }
+
 
     return (
         <>
@@ -213,7 +261,7 @@ const UserProfile = () => {
                                     <NavLink className={`Feed ${isFavorite ? "ActiveMyArticles" : ""} `} to={`/profiles/${username}`} onClick={() => handleChangeMyArticles()} >
                                         My Articles
                                     </NavLink>
-                                    <NavLink className={`Feed ${isFavorite ? "" : "ActiveMyArticles"} `}onClick={() => handleChangeFavoritedArticles()}>
+                                    <NavLink className={`Feed ${isFavorite ? "" : "ActiveMyArticles"} `} onClick={() => handleChangeFavoritedArticles()}>
                                         Favorited Articles
                                     </NavLink>
                                 </Nav>
@@ -253,7 +301,11 @@ const UserProfile = () => {
                                                     <span className='text-secondary' > {moment(article?.createdAt).format('MMMM D, YYYY')}</span>
                                                 </div>
                                                 <div className="col-2 button-tym-container">
-                                                    <button className="btn btn-outline button-tym"><span><MdOutlineFavorite /> {article.favoritesCount} </span></button>
+                                                {article.favorited ?
+                                                        <button onClick={() => handleTrueFalseFavorites(article.slug,article.favorited)} className="btn btn-success"><span><MdOutlineFavorite />Favorites Article {article.favoritesCount} </span></button>
+                                                        :
+                                                        <button onClick={() => handleTrueFalseFavorites(article.slug,article.favorited)} className="btn btn-outline button-tym"><span><MdOutlineFavorite />Favorites Article {article.favoritesCount} </span></button>
+                                                        }
 
                                                 </div>
 

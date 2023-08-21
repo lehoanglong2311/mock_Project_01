@@ -6,12 +6,14 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { useNavigate, Outlet, NavLink } from 'react-router-dom';
 import './Home.css';
-import { getArticlesGlobal, getArticleFollow, getPopularTags, getPopularTagRender } from '../../Services/ApiServices';
+import { getArticlesGlobal, getArticleFollow, getPopularTags, getPopularTagRender, DeleteLike, Like } from '../../Services/ApiServices';
 import ReactPaginate from 'react-paginate';
 import moment from 'moment';
 import { MdOutlineFavorite } from 'react-icons/md'
 import { UserContext } from '../../App';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai'
+import axios from 'axios';
+
 const Home = () => {
     const [articles, setArticles] = useState([])
     const [tab, setTab] = useState('global feed')
@@ -147,6 +149,52 @@ const Home = () => {
         setCurrentPage(1)
 
     }
+    const handleTrueFalseFavorites = async (slug,favorited) => {
+        // alert(favorited)
+        if (!user.token) {
+            navigate('/login');
+            return;
+        }
+        // console.log("Favorite", Favorite);
+        try {
+            if (favorited) {
+                const res = await axios.delete(`https://api.realworld.io/api/articles/${slug}/favorite`, {
+                    headers: {
+                        'Authorization': `Bearer ${token ? token : ""}`
+                    }
+                });;
+                console.log("unlike", res);
+            } else {
+                const res = axios.post(`https://api.realworld.io/api/articles/${slug}/favorite`,null, {
+                    headers: {
+                        'Authorization': `Bearer ${token ? token : ""}`
+                    }
+                });
+            
+                console.log("like", res);
+            }
+           // Toggle the follow status
+           const updatedArticles = articles.map(article => {
+            if (article.slug === slug) {
+                return {
+                    ...article,
+                    favorited: !favorited,
+                    favoritesCount: favorited ? article.favoritesCount - 1 : article.favoritesCount + 1
+                };
+            }
+            return article;
+        });
+
+        setArticles(updatedArticles);
+            // if (favorited) {
+            //     alert('Bài viết bỏ thích');
+            // } else {
+            //     alert('Bài viết đã thích');
+            // }
+        } catch (error) {
+            console.error('Error favorites user:', error);
+        }
+    }
 
     return (
 
@@ -201,7 +249,11 @@ const Home = () => {
                                                             <span className='text-secondary' > {moment(article?.createdAt).format('MMMM D, YYYY')}</span>
                                                         </div>
                                                         <div className="col-2 button-tym-container">
-                                                            <button className="btn btn-outline button-tym"><span><MdOutlineFavorite /> {article.favoritesCount} </span></button>
+                                                        {article.favorited ?
+                                                        <button onClick={() => handleTrueFalseFavorites(article.slug,article.favorited)} className="btn btn-success"><span><MdOutlineFavorite />Favorites Article {article.favoritesCount} </span></button>
+                                                        :
+                                                        <button onClick={() => handleTrueFalseFavorites(article.slug,article.favorited)} className="btn btn-outline button-tym"><span><MdOutlineFavorite />Favorites Article {article.favoritesCount} </span></button>
+                                                        }
 
                                                         </div>
 

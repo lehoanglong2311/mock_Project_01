@@ -67,6 +67,22 @@ const DeleteArticle = (token,slug) => {
     });
 
 }
+const Like = (token,slug,data) => {
+    return axios.post(`https://api.realworld.io/api/articles/${slug}/favorite`,data, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
+
+}
+const DeleteLike = (token,slug) => {
+    return axios.delete(`https://api.realworld.io/api/articles/${slug}/favorite`, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
+
+}
 const getArticleFollow = (token, currentPageFollow) => {
     return axios.get(`https://api.realworld.io/api//articles/feed?limit=10&offset=${(currentPageFollow - 1) * 10}`, {
         headers: {
@@ -83,4 +99,4 @@ const getCurrentUser = (token) => {
     });
 
 }
-export {getPopularTagRender,getFavoritesArticles,getMyArticles,DeleteArticle,EditPutArticle,getCurrentUser, postNewArticle, getArticleFollow, getArticleDetail, getArticlesGlobal, getPopularTags }
+export {Like,DeleteLike,getPopularTagRender,getFavoritesArticles,getMyArticles,DeleteArticle,EditPutArticle,getCurrentUser, postNewArticle, getArticleFollow, getArticleDetail, getArticlesGlobal, getPopularTags }

@@ -12,16 +12,17 @@ import moment from 'moment';
 import { MdOutlineFavorite } from 'react-icons/md'
 import { UserContext } from '../../App';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai'
+import { GET1ARTICLE, HANDLEFAVERITE} from '../Favorites/Constant';
+import axios from 'axios';
 const Home = () => {
     const [articles, setArticles] = useState([])
     const [tab, setTab] = useState('global feed')
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [popularTags, setPopularTags] = useState([])
-    
-
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
+
     //lay user su dung destructuring { }
     //lấy token const token = localStorage.getItem('userToken');
     // thay vì user.token vì khi load lại trang vẫn ok chứ không bị mất những bài đăng của mình.
@@ -148,6 +149,45 @@ const Home = () => {
 
     }
 
+    //==============
+    
+    const fetchAnArticle = async (slug) => {
+        try {
+            const api_an_article = await GET1ARTICLE(slug);
+
+            if (api_an_article.status === 200) {
+                // LOG_SUCCESS_API('get an article', `Slug: ${slug}`)
+                return api_an_article.data.article
+            }
+
+        } catch (error) {
+            // LOG_ERROR_API('fetchAnArticle', error);
+            return null
+        }
+    }
+    const handleFavorites = async (slug) => {
+        try {
+        
+            
+            const res_fetchAnArticle = await fetchAnArticle(slug);
+
+            if (res_fetchAnArticle) {
+                
+
+                const res = await HANDLEFAVERITE(res_fetchAnArticle.favorited ? 'DELETE' : 'POST', slug)
+
+                if (res) {
+                    fetchArticlesGlobal();
+                    // LOG_SUCCESS_API('handleFavorites', `Slug: ${slug}`)
+                }
+            }
+
+        } catch (error) {
+            // LOG_ERROR_API('handleFavorites', error);
+        }
+    }
+    console.log(articles);
+   
     return (
 
 
@@ -201,10 +241,11 @@ const Home = () => {
                                                             <span className='text-secondary' > {moment(article?.createdAt).format('MMMM D, YYYY')}</span>
                                                         </div>
                                                         <div className="col-2 button-tym-container">
-                                                            <button className="btn btn-outline button-tym"><span><MdOutlineFavorite /> {article.favoritesCount} </span></button>
-
+                                                            <button
+                                                            onClick={() => handleFavorites(article.slug)}
+                                                            className={`btn btn-outline-${article.favorited ? 'success' : 'primary'} `}><span><MdOutlineFavorite /> {article.favoritesCount} </span></button>
                                                         </div>
-
+                                                        {article.favorited} 
                                                     </div>
                                                     {/* onClick={() => { handleClickDetail(article.slug) }} */}
                                                     {/* to={`/article/${article.slug}`} */}
@@ -217,7 +258,6 @@ const Home = () => {
                                                             {article.tagList.map((tag) => {
                                                                 return (
                                                                     <>
-
                                                                         <li className="tag-list-li " >{tag}</li>
                                                                     </>
                                                                 )
